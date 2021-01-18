@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, Timestamp, UpdateDateColumn, DeleteDateColumn, OneToOne } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, Timestamp, UpdateDateColumn, DeleteDateColumn, OneToOne, OneToMany } from 'typeorm'
+import { EventType } from './EventType';
 import { ProfilePhoto } from './ProfilePhoto';
 
 @Entity()
@@ -20,6 +21,11 @@ export class User {
 
     @OneToOne(() => ProfilePhoto)
     imageId: ProfilePhoto
+
+    @OneToMany(() => EventType , eventType => eventType.user, {
+        onDelete : "CASCADE"
+    })
+    eventTypes : EventType[]
 
     @CreateDateColumn()
     created_at: Timestamp;

@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, DeleteDateColumn, ManyToOne } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, DeleteDateColumn, OneToOne, ManyToOne } from 'typeorm'
 import { Status } from "../enums/status";
+import { EventType } from './EventType';
 import {Invitee} from './Invitee'
 @Entity()
 export class Booking {
@@ -22,8 +23,9 @@ export class Booking {
     @Column()
     status: Status
 
-    @ManyToOne(() => Invitee , invitee => invitee.bookings, {
-        onDelete : "CASCADE"
-    })
-    invitees : Invitee
+    @OneToOne(() => Invitee )
+    invitee : Invitee
+
+    @ManyToOne(() => EventType, eventType => eventType.bookings, { onDelete: 'CASCADE' })
+    eventType: EventType;
 }

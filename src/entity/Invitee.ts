@@ -1,10 +1,10 @@
 import { IsEmail, IsNotEmpty } from 'class-validator';
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Unique, OneToMany } from 'typeorm'
-import { Booking } from './Booking';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn} from 'typeorm'
+
 
 
 @Entity()
-@Unique(["email"])
+
 export class Invitee {
     @PrimaryGeneratedColumn()
     id: number;
@@ -19,10 +19,6 @@ export class Invitee {
     @IsEmail({}, {message: "Incorrect email"})
     @IsNotEmpty({message: "The email is required"})
     email: string;
-
-    @OneToMany(() => Booking, booking => booking.invitees, { onDelete: 'CASCADE' })
-    bookings: Booking[];
-
 
     @CreateDateColumn()
     createdAt: string;
