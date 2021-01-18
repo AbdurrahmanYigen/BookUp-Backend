@@ -1,4 +1,4 @@
-# Semantic Commit Messages
+# Semantic Commit Messages (cusomized with issue id's)
 
 See how a minor change to your commit message style can make you a better programmer.
 
@@ -9,8 +9,8 @@ Format: `#issueId <type>(<scope>): <subject>`
 ## Examples
 
 ```
-#1 feat: add hat wobble
-|  ^--^  ^------------^
+#1  feat: add hat wobble
+^⁻^ ^--^  ^------------^
 |   |     |
 |   |     +-> Summary in present tense.
 |   |
@@ -18,14 +18,14 @@ Format: `#issueId <type>(<scope>): <subject>`
 |
 +-------> Issue number.
 
-#2 feat(entity): add hat wobble
-|  ^--^    |     ^------------^
-|   |      |     |
-|   |      |     +-> Summary in present tense.
-|   |      |
-|   |      +---> The scope of the changes
-|   |
-|   +-------> Type: chore, docs, feat, fix, refactor, style, or test.
+#2  feat(entity): add hat wobble
+^-^ ^--^ ^-----^  ^------------^
+|    |   |        |
+|    |   |        +-> Summary in present tense.
+|    |   |
+|    |   +---> The scope of the changes
+|    |
+|    +-------> Type: chore, docs, feat, fix, refactor, style, or test.
 |
 +-------> Issue number.
 ```
@@ -40,5 +40,5 @@ More Examples:
 - `test`: (adding missing tests, refactoring tests; no production code change)
 - `chore`: (updating grunt tasks etc; no production code change)
 
-By: 
+Original by : 
 https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716
