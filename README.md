@@ -6,15 +6,28 @@ Format: `#issueId <type>(<scope>): <subject>`
 
 `<scope>` is optional
 
-## Example
+## Examples
 
 ```
 #1 feat: add hat wobble
-^--^  ^------------^
-|     |
-|     +-> Summary in present tense.
+|  ^--^  ^------------^
+|   |     |
+|   |     +-> Summary in present tense.
+|   |
+|   +-------> Type: chore, docs, feat, fix, refactor, style, or test.
 |
-+-------> Type: chore, docs, feat, fix, refactor, style, or test.
++-------> Issue number.
+
+#2 feat(entity): add hat wobble
+|  ^--^    |     ^------------^
+|   |      |     |
+|   |      |     +-> Summary in present tense.
+|   |      |
+|   |      +---> The scope of the changes
+|   |
+|   +-------> Type: chore, docs, feat, fix, refactor, style, or test.
+|
++-------> Issue number.
 ```
 
 More Examples:
