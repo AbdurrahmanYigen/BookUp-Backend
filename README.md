@@ -28,4 +28,4 @@ More Examples:
 - `chore`: (updating grunt tasks etc; no production code change)
 
 By: 
-[https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716]
+https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716
