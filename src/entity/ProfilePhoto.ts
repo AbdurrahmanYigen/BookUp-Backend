@@ -9,11 +9,11 @@ export class ProfilePhoto {
     url: string;
 
     @CreateDateColumn()
-    created_at: Timestamp;
+    createdAt: Timestamp;
 
     @UpdateDateColumn()
-    updated_at: Timestamp;
+    updatedAt: Timestamp;
 
     @DeleteDateColumn()
-    deleted_at: Timestamp;
+    deletedAt: Timestamp;
 }
