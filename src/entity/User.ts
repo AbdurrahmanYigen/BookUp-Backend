@@ -1,4 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, Timestamp, UpdateDateColumn, DeleteDateColumn, OneToOne } from 'typeorm'
+import { AvailableTime } from './AvailableTime';
 import { ProfilePhoto } from './ProfilePhoto';
 
 @Entity()
@@ -15,18 +16,21 @@ export class User {
     @Column()
     userName: string;
 
-    @CreateDateColumn()
-    email_verified_at: Timestamp;
+    @OneToOne(() => AvailableTime, {onDelete: "CASCADE"})
+    availableTime : AvailableTime;
 
-    @OneToOne(() => ProfilePhoto)
+    @CreateDateColumn()
+    emailVerifiedAt: Timestamp;
+
+    @OneToOne(() => ProfilePhoto, {onDelete: "CASCADE"})
     imageId: ProfilePhoto
 
     @CreateDateColumn()
-    created_at: Timestamp;
+    createdAt: Timestamp;
 
     @UpdateDateColumn()
-    updated_at: Timestamp;
+    updatedAt: Timestamp;
 
     @DeleteDateColumn()
-    deleted_at: Timestamp;
+    deletedAt: Timestamp;
 }
