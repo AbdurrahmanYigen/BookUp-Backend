@@ -12,7 +12,7 @@ export const startServer = async () => {
     const dbConnection = await createDatabaseConnection();
     app.use(bodyParser.json());
     app.get('/', async (_: Request, res: Response) => {
-      res.send('Hello worldsssss');
+      res.send('Hello world');
     });
 
     const server = app.listen(port, () => console.log(`Server is running on port ${port}`));
