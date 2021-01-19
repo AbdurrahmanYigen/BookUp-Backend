@@ -1,5 +1,5 @@
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Days } from "../enums/days";
+import { Day } from "../enums/day";
 
 @Entity()
 export class AvailableTime{
@@ -7,7 +7,7 @@ export class AvailableTime{
     id: number;
 
     @Column()
-    day: Days;
+    day: Day;
 
     @Column()
     fromTimeHour: number;
