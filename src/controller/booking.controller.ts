@@ -6,14 +6,16 @@ export const getAllBookings = async(_: Request, res: Response) => {
     const bookingRepository = await getRepository(Booking);
     try {
         const bookings = await bookingRepository.find({relations: ['invitee', 'eventType']});
-        //const bookings = await bookingRepository.find();
 
         res.send({
             data: bookings,
         });
         
     } catch (e) {
-        console.log(e);
+        console.error(e);
+        res.status(400).send({
+            status: "Internal Error!",
+        });
     }
 }
 
@@ -33,7 +35,7 @@ export const createBooking = async(req: Request, res: Response) => {
         });
 
     } catch (e) {
-        console.log(e);
+        console.error(e);
         res.status(400).send({
             message: 'Something went wrong. Could not create booking!',
         });
@@ -52,8 +54,8 @@ export const deleteBookingById = async(req: Request, res: Response) => {
         });
 
     } catch (e) {
-        console.log(e);
-        res.status(404).send({
+        console.error(e);
+        res.status(400).send({
             status: "No Booking with such Id was found!",
         });
     }
@@ -84,8 +86,9 @@ export const patchBookingById = async(req: Request, res: Response) => {
 
 
     } catch (e) {
-        res.send({
-            data: e,
+        console.error(e);
+        res.status(400).send({
+            status: "Internal Error",
         });
     }
 }

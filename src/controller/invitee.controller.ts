@@ -11,7 +11,10 @@ export const getAllInvitees = async(_: Request, res: Response) => {
             data: invitees,
         });
     } catch (e) {
-        console.log(e);
+        console.error(e);
+        res.status(400).send({
+            status: "Internal Error!",
+        });
     }
 
 
@@ -32,7 +35,8 @@ export const createInvitee = async(req: Request, res: Response) => {
         });
 
     } catch (e) {
-        res.status(404).send({
+        console.error(e);
+        res.status(400).send({
             message: 'Something went wrong. Could not create invitee!',
         });
         
@@ -53,8 +57,8 @@ export const deleteInviteeById = async(req: Request, res: Response) => {
 
 
     } catch (e) {
-        console.log(e);
-        res.status(404).send({
+        console.error(e);
+        res.status(400).send({
             status: "No Invitee with such Id was found!",
         });
     };
@@ -85,8 +89,9 @@ export const patchInviteeById = async(req: Request, res: Response) => {
 
 
     } catch (e) {
-        res.send({
-            data: e,
+        console.error(e);
+        res.status(400).send({
+            status: "Internal Error",
         });
     }
 }
