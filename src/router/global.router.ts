@@ -1,4 +1,5 @@
 import { Request, Response, Router } from "express";
+import { inviteeRouter } from "./invitee.router";
 import { userRouter } from "./user.router";
 
 export const globalRouter = Router({ mergeParams: true });
@@ -8,3 +9,5 @@ globalRouter.get('/', async (_: Request, res: Response) => {
 });
 
 globalRouter.use('/user', userRouter);
+
+globalRouter.use('/invitee', inviteeRouter);
