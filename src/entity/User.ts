@@ -8,28 +8,28 @@ export class User {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column()
+    userName: string;
+
     @Column({ unique: true })
     email: string;
 
     @Column()
     password: string;
 
-    @Column()
-    userName: string;
-
-    @OneToOne(() => AvailableTime, {onDelete: "CASCADE"})
-    availableTime : AvailableTime;
+    @OneToOne(() => AvailableTime, { onDelete: "CASCADE" })
+    availableTime: AvailableTime;
 
     @CreateDateColumn()
     emailVerifiedAt: Timestamp;
 
-    @OneToOne(() => ProfilePhoto, {onDelete: "CASCADE"})
+    @OneToOne(() => ProfilePhoto, { onDelete: "CASCADE" })
     imageId: ProfilePhoto
 
-    @OneToMany(() => EventType , eventType => eventType.user, {
-        onDelete : "CASCADE"
+    @OneToMany(() => EventType, eventType => eventType.user, {
+        onDelete: "CASCADE"
     })
-    eventTypes : EventType[]
+    eventTypes: EventType[]
 
     @CreateDateColumn()
     createdAt: Timestamp;
