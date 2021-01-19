@@ -48,14 +48,14 @@ export const deleteInviteeById = async(req: Request, res: Response) => {
         const invitee = await inviteeRepository.findOneOrFail(inviteeId);
         await inviteeRepository.remove(invitee);
         res.send({
-            message: `Invitee with id ${inviteeId} was successfully deleted.`,
+            message: `Invitee with Id ${inviteeId} was successfully deleted.`,
         });
 
 
     } catch (e) {
         console.log(e);
         res.status(404).send({
-            status: "No Invitee with such id was found!",
+            status: "No Invitee with such Id was found!",
         });
     };
 }
