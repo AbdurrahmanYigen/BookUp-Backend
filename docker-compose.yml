@@ -20,7 +20,6 @@ services:
     ports:
       - 4000:4000
       - 9229:9229
-    command: npm start
+    command: bash -c "npm start"
     volumes:
       - ./:/var/app/backend
-      - ./node_modules:/var/app/backend/node_modules
