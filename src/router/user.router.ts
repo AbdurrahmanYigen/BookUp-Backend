@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createEvent, createUser, DeleteEvent, deleteUserById, getAllUsers, getUserById, patchUserById, updateEvent } from "../controller/user.controller";
+import { createEvent, createUser, DeleteEvent, deleteUserById, getAllUsers, getUserById, loginUser, patchUserById, registerUser, updateEvent } from "../controller/user.controller";
 
 export const userRouter = Router({ mergeParams: true });
 
@@ -25,3 +25,9 @@ userRouter.patch('/:userId', patchUserById);
 
 //Delete User by Id
 userRouter.delete('/:userId', deleteUserById);
+
+//Register User 
+userRouter.post('/register', registerUser)
+
+//Login User 
+userRouter.post('/token',loginUser)

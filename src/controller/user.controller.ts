@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { getRepository } from "typeorm";
 import { EventType } from "../entity/EventType";
 import { User } from "../entity/User";
+import { Authentication } from "../middleware/authentication";
 
 export const createUser = async (req: Request, res: Response) => {
     const { userName, email, password } = req.body;
@@ -165,3 +166,70 @@ export const deleteUserById = async (req: Request, res: Response) => {
 
 
 }
+
+export const registerUser = async (req: Request, res: any) => {
+    let {email,userName,password} = req.body;
+
+    const userRepository = await getRepository(User);
+
+    //check if user exists
+    const user = await userRepository.findOne({
+        where : {
+            email : email
+        }
+    })
+    if(user) {
+        return res.status(400).send({
+            status: 'bad_request'
+        })
+    }
+
+    //Generate hashed password
+    const hashedPassword: string = await Authentication.hashPassword(password);
+
+    let newUser = new User();
+    newUser.email = email;
+    newUser.userName = userName;
+    newUser.password = hashedPassword ;
+
+    const createdUser = await  userRepository.save(newUser); 
+
+    res.send({
+        data:createdUser
+    })
+
+}
+
+export const loginUser = async (req: Request, res: Response) => {
+    const { email, password } = req.body;
+    const userRepository = await getRepository(User);
+    // Check if user exists
+    //check if user exists
+    const user = await userRepository.findOne({
+        where : {
+            email : email
+        }
+    })
+  
+    if (!user) {
+      return res.status(401).send({ status: 'unauthorized' });
+    }
+  
+    const matchingPasswords: boolean = await Authentication.comparePasswordWithHash(password, user.password);
+    if (!matchingPasswords) {
+      return res.status(401).send({ status: 'unauthorized' });
+    }
+  
+    const token: string = await Authentication.generateToken({
+      email: user.email,
+      id: user.id,
+      name: user.userName,
+    });
+  
+    return res.send({
+      data: token,
+    });
+  };
+  
+
+
