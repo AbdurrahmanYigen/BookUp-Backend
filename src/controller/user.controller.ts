@@ -83,18 +83,83 @@ export const DeleteEvent = async(req:Request,res:Response) => {
 }
 
 
-// export const getUserById = async (req: Request, res: Response) => {
+export const getUserById = async (req: Request, res: Response) => {
+    const eventRepository = getRepository(User);
+    let userId = req.params.userId;
+    try{
+        let user = await eventRepository.findOneOrFail({relations: ['eventTypes'], where: {id : userId}});
+        res.send({
+            data: user
+        })
+    }
+    catch(e) {
+        res.status(404).send({status : 'not Found'});
+    }
+}
 
-// }
 
-// export const getAllUsers = async (_: Request, res: Response) => {
+export const getAllUsers = async (_: Request, res: Response) => {
+    const userRepository = getRepository(User);
+    try {
+        const users = await userRepository.find()
+        res.send({
+            data: users,
+        });
 
-// }
 
-// export const patchUser = async (req: Request, res: Response) => {
+    } catch (e) {
+        res.status(400).send({
+            status: "So empty nothing to see here!",
+        });
+    }
+}
 
-// }
+export const patchUserById = async (req: Request, res: Response) => {
+    const userRepository = await getRepository(User);
+    const userId = req.params.userId;
+    const {email, userName} = req.body;
 
-// export const deleteUserById = async (req: Request, res: Response) => {
+    try {
+        let user = await userRepository.findOneOrFail(userId)
+        if('userName' in req.body){
+            user.userName = userName;
+        }
 
-// }
+        else if('email' in req.body){
+            user.email = email
+        }
+
+        const updatedUser = await userRepository.save(user)
+
+        console.log("patch User was successfully.");
+        res.send({
+            data: updatedUser,
+        });
+
+    } catch (e) {
+        res.status(400).send({
+            status: "Internal Error",
+        });
+    }
+
+}
+
+export const deleteUserById = async (req: Request, res: Response) => {
+    const userRepository = getRepository(User);
+    const userId = req.params.userId;
+
+    try {
+        const user = await userRepository.findOneOrFail(userId);
+        await userRepository.remove(user);
+        res.send({
+            message: `User with Id ${userId} was successfully deleted.`,
+        });
+
+    } catch (e) {
+        res.status(400).send({
+            status: "No User with such Id was found!",
+        })
+    }
+
+
+}
