@@ -50,7 +50,7 @@ export class Authentication {
     
         // Check if the authorization header exists
         if (!jwt) {
-          return res.status(401).send({ status: 'unauthorized' });
+          return res.status(401).send({ status: 'unauthorized'});
         }
     
         // Verify the token. Returns the jwt object if valid - else null
