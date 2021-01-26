@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
+import { NextFunction,Request,Response } from 'express';
 
 export class Authentication {
     private static SECRET_KEY = 'JWT_SECRET';
@@ -33,4 +34,22 @@ export class Authentication {
             return false;
         }
     }
-}
+    
+    public static async verifyAccess(req: Request, res: Response, next: NextFunction) {
+        const jwt = req.get('Authorization');
+    
+        // Check if the authorization header exists
+        if (!jwt) {
+          return res.status(401).send({ status: 'unauthorized' });
+        }
+    
+        // Verify the token. Returns the jwt object if valid - else null
+        const validToken = await Authentication.verifyToken(jwt);
+        if (!validToken) {
+          return res.status(401).send({ status: 'unauthorized' });
+        }
+    
+        return next();
+      }
+    }
+    
