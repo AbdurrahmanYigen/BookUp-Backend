@@ -1,7 +1,17 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import { NextFunction,Request,Response } from 'express';
-
+export interface JWTUserData {
+    email: string;
+    name: string;
+    id: string;
+  }
+  
+  export interface JWTToken extends JWTUserData {
+    iat: number;
+    exp: number;
+  }
+  
 export class Authentication {
     private static SECRET_KEY = 'JWT_SECRET';
     private static JWT_OPTIONS : jwt.SignOptions = {
@@ -52,4 +62,6 @@ export class Authentication {
         return next();
       }
     }
+
+   
     
