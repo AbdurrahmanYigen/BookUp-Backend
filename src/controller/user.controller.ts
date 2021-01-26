@@ -25,7 +25,7 @@ export const createUser = async (req: Request, res: Response) => {
 
 //Create Event to user
 export const createEvent = async(req:Request,res:Response) => {
-    let userid = req.params.id;
+    let userid = req.params.userid;
     let {title,description,duration,link} = req.body;
     const userRepository = getRepository(User);
     try{
@@ -38,7 +38,7 @@ export const createEvent = async(req:Request,res:Response) => {
         newEvent.user = foundUser
         foundUser.eventTypes = [newEvent]
         await getRepository(EventType).save(newEvent)
-        res.send("Successfully Added Event bedinhcao" )
+        res.send("Successfully added Event to User")
     }
     catch(e){
         res.status(404).send({status:'not found'})
@@ -117,14 +117,16 @@ export const getAllUsers = async (_: Request, res: Response) => {
 export const patchUserById = async (req: Request, res: Response) => {
     const userRepository = await getRepository(User);
     const userId = req.params.userId;
-    const {email, userName} = req.body;
+    const {email, userName, password} = req.body;
 
     try {
         let user = await userRepository.findOneOrFail(userId)
         if('userName' in req.body){
             user.userName = userName;
         }
-
+        if('password' in req.body){
+            user.password = password;
+        }
         else if('email' in req.body){
             user.email = email
         }
