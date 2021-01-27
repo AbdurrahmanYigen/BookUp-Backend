@@ -5,6 +5,7 @@ import "reflect-metadata"
 import { createDatabaseConnection } from './util/createDatabaseConnection';
 import * as bodyParser from 'body-parser';
 import { globalRouter } from './router/global.router';
+import { logTime } from './middleware/logger';
 const port: number = Number(process.env.PORT);
 
 export const startServer = async () => {
@@ -12,6 +13,7 @@ export const startServer = async () => {
     const app = express()
     const dbConnection = await createDatabaseConnection();
     app.use(bodyParser.json());
+    app.use(logTime)
     app.get('/', async (_: Request, res: Response) => {
       res.send('Hello world');
     });
