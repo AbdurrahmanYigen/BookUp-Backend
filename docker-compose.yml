@@ -20,6 +20,9 @@ services:
     ports:
       - 4000:4000
       - 9229:9229
-    command: npm run dev
+    command: >
+      sh -c "npm i bcrypt &&
+             npm i @types/bcrypt &&
+             npm run dev"
     volumes:
       - ./:/var/app/backend
