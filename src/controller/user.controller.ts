@@ -3,6 +3,7 @@ import { getRepository } from "typeorm";
 import { EventType } from "../entity/EventType";
 import { User } from "../entity/User";
 import { Authentication } from "../middleware/authentication";
+import { getDefaultWeek } from "./dayAvailability.controller";
 
 export const createUser = async (req: Request, res: Response) => {
     const { userName, email, password } = req.body;
@@ -12,6 +13,7 @@ export const createUser = async (req: Request, res: Response) => {
         user.userName = userName;
         user.email = email;
         user.password = password;
+        user.availableTime = getDefaultWeek();
         const createdUser = await userRepository.save(user);
         res.send({
             data: createdUser,
@@ -102,7 +104,7 @@ export const getUserById = async (req: Request, res: Response) => {
 export const getAllUsers = async (_: Request, res: Response) => {
     const userRepository = getRepository(User);
     try {
-        const users = await userRepository.find()
+        const users = await userRepository.find({relations: ['availableTime']})
         res.send({
             data: users,
         });
