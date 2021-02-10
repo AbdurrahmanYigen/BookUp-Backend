@@ -1,6 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, Timestamp, UpdateDateColumn, DeleteDateColumn, OneToOne, OneToMany } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, Timestamp, UpdateDateColumn, DeleteDateColumn, OneToOne, OneToMany, JoinColumn } from 'typeorm'
 import { EventType } from './EventType';
-import { AvailableTime } from './AvailableTime';
+import { DayAvailability } from './DayAvailability';
 import { ProfilePhoto } from './ProfilePhoto';
 
 @Entity()
@@ -17,13 +17,17 @@ export class User {
     @Column()
     password: string;
 
-    @OneToOne(() => AvailableTime, { onDelete: "CASCADE" })
-    availableTime: AvailableTime;
+    @OneToMany(() => DayAvailability, dayAvailavbility => dayAvailavbility.user, { 
+        cascade: true,
+        onDelete: "CASCADE"
+     })
+    availableTime: DayAvailability[];
 
     @CreateDateColumn()
     emailVerifiedAt: Timestamp;
 
     @OneToOne(() => ProfilePhoto, { onDelete: "CASCADE" })
+    @JoinColumn()
     imageId: ProfilePhoto
 
     @OneToMany(() => EventType, eventType => eventType.user, {

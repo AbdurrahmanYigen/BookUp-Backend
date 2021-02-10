@@ -1,11 +1,11 @@
 export enum Day{
-    MONDAY = 1,
-    TUESDAY,
-    WEDNESDAY,
-    THURSDAY,
-    FRIDAY,
-    SATURDAY,
-    SUNDAY
+    MONDAY = "MONDAY",
+    TUESDAY = "TUESDAY",
+    WEDNESDAY = "WEDNESDAY",
+    THURSDAY = "THURSDAY",
+    FRIDAY = "FIRDAY",
+    SATURDAY = "SATURDAY",
+    SUNDAY = "SUNDAY"
 };
 
 export const mapDayStringToDayEnum = (dayName: string) : Day => {

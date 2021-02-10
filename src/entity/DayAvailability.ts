@@ -1,12 +1,20 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Day } from "../enums/day";
+import { User } from "./User";
 
 @Entity()
-export class AvailableTime{
+export class DayAvailability{
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @ManyToOne (() => User, user => user.availableTime, {onDelete: "CASCADE"})
+    user: User;
+
+    @Column({
+        name: 'day',
+        type: 'enum',
+        enum: Day
+    })
     day: Day;
 
     @Column()
