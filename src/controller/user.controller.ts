@@ -27,52 +27,66 @@ export const createUser = async (req: Request, res: Response) => {
 }
 
 //Create Event to user
-export const createEvent = async(req:Request,res:Response) => {
+export const createEvent = async (req: Request, res: Response) => {
     let userid = req.params.userid;
-    let {title,description,duration,link} = req.body;
+    let { title, description, duration, link } = req.body;
     const userRepository = getRepository(User);
-    try{
+    try {
         let foundUser = await userRepository.findOneOrFail(userid)
         let newEvent = new EventType()
         newEvent.title = title
         newEvent.description = description
         newEvent.duration = duration
-        newEvent.link = link        
+        newEvent.link = link
         newEvent.user = foundUser
         foundUser.eventTypes = [newEvent]
         await getRepository(EventType).save(newEvent)
         res.send("Successfully added Event to User")
     }
-    catch(e){
-        res.status(404).send({status:'not found'})
+    catch (e) {
+        res.status(404).send({ status: 'not found' })
     }
+}
 
+//Get Event
+export const getEventFromUserId = async (req: Request, res: Response) => {
+    const userRepository = getRepository(User);
+    let userId = req.params.userId;
+    try {
+        let user = await userRepository.findOneOrFail({ relations: ['eventTypes'], where: { id: userId } });
+        res.send({
+            data: user.eventTypes
+        })
+    }
+    catch (e) {
+        res.status(404).send({ status: 'not Found' });
+    }
 }
 
 //Update Event 
-export const updateEvent = async (req:Request,res:Response) => {
+export const updateEvent = async (req: Request, res: Response) => {
     let eventid = req.params.eventid;
-    let {title,description,duration,link} = req.body
+    let { title, description, duration, link } = req.body
     const eventRepository = getRepository(EventType)
     try {
         let foundEvent = await eventRepository.findOneOrFail(eventid)
         foundEvent.title = title
-        foundEvent.duration =duration
+        foundEvent.duration = duration
         foundEvent.link = link
         foundEvent.description = description
         const updatedEvent = await eventRepository.save(foundEvent)
         res.send({
-            data:updatedEvent
+            data: updatedEvent
         })
     }
-    catch(e){
-        res.status(404).send({status : 'not Found'});
+    catch (e) {
+        res.status(404).send({ status: 'not Found' });
     }
 
 }
 
 //Delete Event
-export const DeleteEvent = async(req:Request,res:Response) => {
+export const DeleteEvent = async (req: Request, res: Response) => {
     let eventid = req.params.eventid;
     const eventRepository = getRepository(EventType)
     try {
@@ -80,23 +94,23 @@ export const DeleteEvent = async(req:Request,res:Response) => {
         await eventRepository.remove(foundEvent)
         res.send("Deleted Successfully")
     }
-    catch(e){
-    res.status(404).send({status : 'not Found'});
+    catch (e) {
+        res.status(404).send({ status: 'not Found' });
     }
 }
 
 
 export const getUserById = async (req: Request, res: Response) => {
-    const eventRepository = getRepository(User);
+    const userRepository = getRepository(User);
     let userId = req.params.userId;
-    try{
-        let user = await eventRepository.findOneOrFail({relations: ['eventTypes'], where: {id : userId}});
+    try {
+        let user = await userRepository.findOneOrFail({ relations: ['eventTypes'], where: { id: userId } });
         res.send({
             data: user
         })
     }
-    catch(e) {
-        res.status(404).send({status : 'not Found'});
+    catch (e) {
+        res.status(404).send({ status: 'not Found' });
     }
 }
 
@@ -104,7 +118,7 @@ export const getUserById = async (req: Request, res: Response) => {
 export const getAllUsers = async (_: Request, res: Response) => {
     const userRepository = getRepository(User);
     try {
-        const users = await userRepository.find({relations: ['availableTime']})
+        const users = await userRepository.find({ relations: ['availableTime'] })
         res.send({
             data: users,
         });
@@ -120,17 +134,17 @@ export const getAllUsers = async (_: Request, res: Response) => {
 export const patchUserById = async (req: Request, res: Response) => {
     const userRepository = await getRepository(User);
     const userId = req.params.userId;
-    const {email, userName, password} = req.body;
+    const { email, userName, password } = req.body;
 
     try {
         let user = await userRepository.findOneOrFail(userId)
-        if('userName' in req.body){
+        if ('userName' in req.body) {
             user.userName = userName;
         }
-        if('password' in req.body){
+        if ('password' in req.body) {
             user.password = password;
         }
-        else if('email' in req.body){
+        else if ('email' in req.body) {
             user.email = email
         }
 
@@ -170,17 +184,17 @@ export const deleteUserById = async (req: Request, res: Response) => {
 }
 
 export const registerUser = async (req: Request, res: any) => {
-    let {email,userName,password} = req.body;
+    let { email, userName, password } = req.body;
 
     const userRepository = await getRepository(User);
 
     //check if user exists
     const user = await userRepository.findOne({
-        where : {
-            email : email
+        where: {
+            email: email
         }
     })
-    if(user) {
+    if (user) {
         return res.status(400).send({
             status: 'bad_request'
         })
@@ -192,12 +206,12 @@ export const registerUser = async (req: Request, res: any) => {
     let newUser = new User();
     newUser.email = email;
     newUser.userName = userName;
-    newUser.password = hashedPassword ;
+    newUser.password = hashedPassword;
 
-    const createdUser = await  userRepository.save(newUser); 
+    const createdUser = await userRepository.save(newUser);
 
     res.send({
-        data:createdUser
+        data: createdUser
     })
 
 }
@@ -208,30 +222,30 @@ export const loginUser = async (req: Request, res: Response) => {
     // Check if user exists
     //check if user exists
     const user = await userRepository.findOne({
-        where : {
-            email : email
+        where: {
+            email: email
         }
     })
-  
+
     if (!user) {
-      return res.status(401).send({ status: 'unauthorized' });
+        return res.status(401).send({ status: 'unauthorized' });
     }
-  
+
     const matchingPasswords: boolean = await Authentication.comparePasswordWithHash(password, user.password);
     if (!matchingPasswords) {
-      return res.status(401).send({ status: 'unauthorized' });
+        return res.status(401).send({ status: 'unauthorized' });
     }
-  
+
     const token: string = await Authentication.generateToken({
-      email: user.email,
-      id: user.id,
-      name: user.userName,
+        email: user.email,
+        id: user.id,
+        name: user.userName,
     });
-  
+
     return res.send({
-      data: token,
+        data: token,
     });
-  };
-  
+};
+
 
 
