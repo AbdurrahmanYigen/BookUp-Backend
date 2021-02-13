@@ -1,0 +1,7 @@
+entity: User
+items:
+  devUser:
+    email: "test@hda.de"
+    # 123456 in bcrypt
+    password: "$2b$10$JIiWfJjvgEKCgn4w/decr.Mz.dhzkcSN/4wAHfCloaqBYzLuPmsUO"
+    userName: "FWE-Developer"

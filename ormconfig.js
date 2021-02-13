@@ -2,9 +2,12 @@ const prefix = (path) => {
     let prefix = null;
     switch (process.env.NODE_ENV) {
         // development uses tsc-watch now
+        case "test":
+            prefix = "src";
+            break;
         case 'development':
         default:
-            prefix = 'dist';
+            prefix = 'dist/src';
             break;
     }
 
