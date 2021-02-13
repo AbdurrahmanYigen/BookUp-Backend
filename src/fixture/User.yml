@@ -11,5 +11,24 @@ items:
         endTimeHour: 18
         fromTimeMinute: 0
         endTimeMinute: 0
-        active: true     
-       
+        active: true
+    # eventTypes:
+    #   - title: "Test-title"
+    #     description: "this is a test description"
+    #     duration: 15
+    #     link: "test/link"
+    #     bookings:
+    #       []
+
+  devUser2:
+    email: "test2@hda.de"
+    # 123456 in bcrypt
+    password: "$2b$10$JIiWfJjvgEKCgn4w/decr.Mz.dhzkcSN/4wAHfCloaqBYzLuPmsUO"
+    userName: "Backend-Tester"
+    availableTime:
+      - day: "TUESDAY"
+        fromTimeHour: 10
+        endTimeHour: 18
+        fromTimeMinute: 0
+        endTimeMinute: 0
+        active: false
