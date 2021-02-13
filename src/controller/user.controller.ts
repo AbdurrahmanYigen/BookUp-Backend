@@ -207,6 +207,7 @@ export const registerUser = async (req: Request, res: any) => {
     newUser.email = email;
     newUser.userName = userName;
     newUser.password = hashedPassword;
+    newUser.availableTime = getDefaultWeek();
 
     const createdUser = await userRepository.save(newUser);
 
