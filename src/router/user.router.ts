@@ -1,9 +1,8 @@
 import { Router } from "express";
-import { createEvent, createUser, DeleteEvent, deleteUserById, getAllUsers, getEventFromUserId, getUserById, loginUser, patchUserById, registerUser, updateEvent } from "../controller/user.controller";
+import { createEvent, DeleteEvent, deleteUserById, getAllUsers, getEventFromUserId, getUserById, loginUser, patchUserById, registerUser, updateEvent } from "../controller/user.controller";
 
 export const userRouter = Router({ mergeParams: true });
 
-userRouter.post('/', createUser);
 
 //Add Event to user
 userRouter.post('/:userid/eventType', createEvent)

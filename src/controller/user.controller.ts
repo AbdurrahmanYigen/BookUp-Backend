@@ -5,26 +5,6 @@ import { User } from "../entity/User";
 import { Authentication } from "../middleware/authentication";
 import { getDefaultWeek } from "./dayAvailability.controller";
 
-export const createUser = async (req: Request, res: Response) => {
-    const { userName, email, password } = req.body;
-    const userRepository = getRepository(User);
-    try {
-        const user = new User();
-        user.userName = userName;
-        user.email = email;
-        user.password = password;
-        user.availableTime = getDefaultWeek();
-        const createdUser = await userRepository.save(user);
-        res.send({
-            data: createdUser,
-        });
-    } catch (error) {
-        console.log(error);
-        res.status(200).send({
-            status: 'failed creating user!',
-        })
-    }
-}
 
 //Create Event to user
 export const createEvent = async (req: Request, res: Response) => {
