@@ -5,3 +5,11 @@ items:
     # 123456 in bcrypt
     password: "$2b$10$JIiWfJjvgEKCgn4w/decr.Mz.dhzkcSN/4wAHfCloaqBYzLuPmsUO"
     userName: "FWE-Developer"
+    availableTime:
+      - day: "MONDAY"
+        fromTimeHour: 10
+        endTimeHour: 18
+        fromTimeMinute: 0
+        endTimeMinute: 0
+        active: true     
+       

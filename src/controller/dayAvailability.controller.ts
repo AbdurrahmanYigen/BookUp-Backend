@@ -43,6 +43,7 @@ export const getDefaultWeek = (): DayAvailability[] =>{
             weekDay.endTimeHour = 18;
             weekDay.fromTimeMinute = 0;
             weekDay.endTimeMinute = 0;
+            weekDay.active = true;
             week.push(weekDay);
         //}
     }
@@ -100,7 +101,8 @@ export const patchDayAvailability = async (req: Request, res: Response) => {
         console.log("patchDayAvailability vor update", user.availableTime);
         for(let i = 0; i < user.availableTime.length; i++){
             if(user.availableTime[i].day == dayAvailability.day){
-                user.availableTime[i] = dayAvailability;
+                Object.assign(user.availableTime[i], dayAvailability);
+                break;
             }
         }
         const updatedUser = await userRepository.save(user);

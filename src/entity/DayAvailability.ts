@@ -21,6 +21,9 @@ export class DayAvailability{
     fromTimeHour: number;
 
     @Column()
+    active: boolean;
+
+    @Column()
     fromTimeMinute: number;
 
     @Column()
