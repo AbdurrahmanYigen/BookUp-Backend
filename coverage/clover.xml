@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1613329946062" clover="3.2.0">
-  <project timestamp="1613329946063" name="All files">
-    <metrics statements="495" coveredstatements="407" conditionals="33" coveredconditionals="19" methods="81" coveredmethods="68" elements="609" coveredelements="494" complexity="0" loc="495" ncloc="495" packages="7" files="20" classes="20"/>
+<coverage generated="1613335002661" clover="3.2.0">
+  <project timestamp="1613335002662" name="All files">
+    <metrics statements="495" coveredstatements="426" conditionals="33" coveredconditionals="19" methods="81" coveredmethods="72" elements="609" coveredelements="517" complexity="0" loc="495" ncloc="495" packages="7" files="20" classes="20"/>
     <package name="backend">
       <metrics statements="10" coveredstatements="8" conditionals="3" coveredconditionals="1" methods="1" coveredmethods="1"/>
       <file name="ormconfig.js" path="/var/app/backend/ormconfig.js">
@@ -19,9 +19,9 @@
       </file>
     </package>
     <package name="backend.src.controller">
-      <metrics statements="272" coveredstatements="200" conditionals="14" coveredconditionals="7" methods="47" coveredmethods="39"/>
+      <metrics statements="272" coveredstatements="219" conditionals="14" coveredconditionals="7" methods="47" coveredmethods="43"/>
       <file name="booking.controller.ts" path="/var/app/backend/src/controller/booking.controller.ts">
-        <metrics statements="48" coveredstatements="21" conditionals="0" coveredconditionals="0" methods="8" coveredmethods="4"/>
+        <metrics statements="48" coveredstatements="40" conditionals="0" coveredconditionals="0" methods="8" coveredmethods="8"/>
         <line num="2" count="6" type="stmt"/>
         <line num="3" count="6" type="stmt"/>
         <line num="7" count="6" type="stmt"/>
@@ -38,38 +38,38 @@
         <line num="29" count="1" type="stmt"/>
         <line num="30" count="1" type="stmt"/>
         <line num="31" count="1" type="stmt"/>
-        <line num="37" count="1" type="stmt"/>
-        <line num="43" count="1" type="stmt"/>
-        <line num="44" count="1" type="stmt"/>
-        <line num="45" count="1" type="stmt"/>
-        <line num="46" count="1" type="stmt"/>
-        <line num="51" count="0" type="stmt"/>
-        <line num="52" count="0" type="stmt"/>
-        <line num="58" count="6" type="stmt"/>
-        <line num="59" count="0" type="stmt"/>
+        <line num="32" count="1" type="stmt"/>
+        <line num="33" count="1" type="stmt"/>
+        <line num="34" count="1" type="stmt"/>
+        <line num="35" count="1" type="stmt"/>
+        <line num="36" count="1" type="stmt"/>
+        <line num="41" count="0" type="stmt"/>
+        <line num="42" count="0" type="stmt"/>
+        <line num="48" count="6" type="stmt"/>
+        <line num="49" count="1" type="stmt"/>
+        <line num="50" count="1" type="stmt"/>
+        <line num="52" count="1" type="stmt"/>
+        <line num="53" count="1" type="stmt"/>
+        <line num="54" count="1" type="stmt"/>
+        <line num="55" count="1" type="stmt"/>
         <line num="60" count="0" type="stmt"/>
-        <line num="62" count="0" type="stmt"/>
-        <line num="63" count="0" type="stmt"/>
-        <line num="64" count="0" type="stmt"/>
-        <line num="65" count="0" type="stmt"/>
-        <line num="70" count="0" type="stmt"/>
-        <line num="71" count="0" type="stmt"/>
-        <line num="77" count="6" type="stmt"/>
-        <line num="78" count="0" type="stmt"/>
-        <line num="79" count="0" type="stmt"/>
-        <line num="81" count="0" type="stmt"/>
-        <line num="83" count="0" type="stmt"/>
-        <line num="84" count="0" type="stmt"/>
-        <line num="85" count="0" type="stmt"/>
-        <line num="86" count="0" type="stmt"/>
-        <line num="88" count="0" type="stmt"/>
-        <line num="89" count="0" type="stmt"/>
+        <line num="61" count="0" type="stmt"/>
+        <line num="67" count="6" type="stmt"/>
+        <line num="68" count="1" type="stmt"/>
+        <line num="69" count="1" type="stmt"/>
+        <line num="71" count="1" type="stmt"/>
+        <line num="73" count="1" type="stmt"/>
+        <line num="74" count="1" type="stmt"/>
+        <line num="75" count="1" type="stmt"/>
+        <line num="76" count="1" type="stmt"/>
+        <line num="78" count="1" type="stmt"/>
+        <line num="79" count="1" type="stmt"/>
+        <line num="82" count="1" type="stmt"/>
+        <line num="83" count="1" type="stmt"/>
+        <line num="84" count="1" type="stmt"/>
+        <line num="86" count="1" type="stmt"/>
         <line num="92" count="0" type="stmt"/>
         <line num="93" count="0" type="stmt"/>
-        <line num="94" count="0" type="stmt"/>
-        <line num="96" count="0" type="stmt"/>
-        <line num="102" count="0" type="stmt"/>
-        <line num="103" count="0" type="stmt"/>
       </file>
       <file name="dayAvailability.controller.ts" path="/var/app/backend/src/controller/dayAvailability.controller.ts">
         <metrics statements="69" coveredstatements="44" conditionals="2" coveredconditionals="1" methods="11" coveredmethods="7"/>
@@ -561,19 +561,19 @@
         <line num="22" count="6" type="stmt"/>
         <line num="26" count="6" type="stmt"/>
         <line num="27" count="6" type="stmt"/>
-        <line num="29" count="24" type="stmt"/>
-        <line num="30" count="24" type="stmt"/>
+        <line num="29" count="26" type="stmt"/>
+        <line num="30" count="26" type="stmt"/>
         <line num="33" count="6" type="stmt"/>
-        <line num="37" count="24" type="stmt"/>
-        <line num="38" count="24" type="stmt"/>
-        <line num="40" count="24" type="stmt"/>
-        <line num="41" count="24" type="stmt"/>
-        <line num="42" count="24" type="stmt"/>
-        <line num="44" count="24" type="stmt"/>
-        <line num="45" count="96" type="stmt"/>
-        <line num="46" count="96" type="stmt"/>
+        <line num="37" count="26" type="stmt"/>
+        <line num="38" count="26" type="stmt"/>
+        <line num="40" count="26" type="stmt"/>
+        <line num="41" count="26" type="stmt"/>
+        <line num="42" count="26" type="stmt"/>
+        <line num="44" count="26" type="stmt"/>
+        <line num="45" count="104" type="stmt"/>
+        <line num="46" count="104" type="stmt"/>
         <line num="51" count="0" type="stmt"/>
-        <line num="55" count="118" type="stmt"/>
+        <line num="55" count="128" type="stmt"/>
         <line num="59" count="0" type="stmt"/>
         <line num="61" count="0" type="stmt"/>
       </file>
