@@ -22,7 +22,7 @@ export class EventType{
     @ManyToOne(() => User, user => user.eventTypes, { onDelete: 'CASCADE' })
     user: User;
 
-    @OneToMany(() => Booking, booking => booking.eventType, { onDelete: 'CASCADE' })
+    @OneToMany(() => Booking, booking => booking.eventType, { onDelete: 'CASCADE'})
     bookings: Booking[];
 
 

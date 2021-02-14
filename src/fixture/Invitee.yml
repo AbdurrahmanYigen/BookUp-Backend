@@ -1,0 +1,7 @@
+entity: Invitee
+items:
+  inviteer:
+    email: "test@hda.de"
+    firstName: "test"
+    lastName: "user"
+

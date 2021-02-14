@@ -1,0 +1,8 @@
+
+entity: Booking
+items:
+  booking:
+    date: Tue Feb 05 2019
+    status: 1
+
+

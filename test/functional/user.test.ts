@@ -97,4 +97,20 @@ describe('user', () => {
     //         done();
     //     })
     // } )
+
+    it('should delete the user with a specific id' , async(done) => {
+        await helper.resetDatabase();
+        await helper.loadFixtures();
+        request(helper.app)
+        .delete(`/api/user/1`)
+        .set('Content-Type', 'application/json')
+        .set('Accept', 'application/json')
+        .end(async(err , _res) => {
+            if(err) throw err;
+            const user = await helper.getRepo(User).find({});
+            expect(user.length).toBe(1)
+            done();
+        })
+    } )
+
 })

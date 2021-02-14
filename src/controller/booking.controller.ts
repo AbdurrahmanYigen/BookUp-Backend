@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { getRepository } from "typeorm";
 import { Booking } from "../entity/Booking";
+// import { EventType } from "../entity/EventType";
+// import { Invitee } from "../entity/Invitee";
 
 export const getAllBookings = async(_: Request, res: Response) => {
     const bookingRepository = await getRepository(Booking);
@@ -27,8 +29,19 @@ export const createBooking = async(req: Request, res: Response) => {
     try {
         booking.date = date;
         booking.status = status;
+
+        // let newInvitee = new Invitee()
+        // newInvitee.email = invitee.email;
+        // newInvitee.firstName = invitee.firstName
+        // newInvitee.lastName = invitee.lastName
         booking.invitee = invitee;
+        // let newEvent = new EventType()
+        // newEvent.description = eventType.description
+        // newEvent.link = eventType.link
+        // newEvent.title = eventType.title
+        // newEvent.duration = eventType.duration
         booking.eventType = eventType;
+        console.log(booking)
         const createdBooking = await bookingRepository.save(booking);
         res.send({
             data: createdBooking,

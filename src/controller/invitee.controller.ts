@@ -67,24 +67,24 @@ export const deleteInviteeById = async(req: Request, res: Response) => {
 export const patchInviteeById = async(req: Request, res: Response) => {
     const inviteeRepository = await getRepository(Invitee);
     const inviteeId = req.params.inviteeId;
+    const { firstname, lastname, email} = req.body;
 
-    let oldInvitee = new Invitee();
 
     try {
-        oldInvitee = await inviteeRepository.findOneOrFail(inviteeId);
-        let newInvitee = new Invitee();
-        newInvitee = req.body;
+        const invitee = await inviteeRepository.findOneOrFail(inviteeId);
+        invitee.firstName = firstname;
+        invitee.lastName = lastname;
+        invitee.email = email;
 
-        Object.assign(oldInvitee, newInvitee);
-        await inviteeRepository.save(oldInvitee);
-
+        // Object.assign(oldInvitee, newInvitee);  //dont know why but wont work// so commented out
+        const updatedInvitee = await inviteeRepository.save(invitee);
         //vielleicht überflüssig
-        let correctDataOutput = new Invitee();
-        correctDataOutput = await inviteeRepository.findOneOrFail(inviteeId);
+        // let correctDataOutput = new Invitee();
+        // correctDataOutput = await inviteeRepository.findOneOrFail(inviteeId);
         console.log("patch Invitee was successfully.")
 
         res.send({
-            data: correctDataOutput,
+            data: updatedInvitee,
         });
 
 
