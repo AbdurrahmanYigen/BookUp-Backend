@@ -18,8 +18,7 @@ export const getAvailabilityOfUser = async (req: Request, res: Response) => {
     const userRepository = getRepository(User);
 
     try {
-        const user = await userRepository.findOneOrFail({relations: ['availableTime'], where: {id: userId}});
-        console.log("found user", user);
+        const user = await userRepository.findOneOrFail({ relations: ['availableTime'], where: { id: userId } });
         res.send({
             data: user.availableTime
         });
@@ -32,19 +31,18 @@ export const getAvailabilityOfUser = async (req: Request, res: Response) => {
 
 }
 
-export const getDefaultWeek = (): DayAvailability[] =>{
-    const week : DayAvailability[] = [];
-    for(let dayName in Day){
+export const getDefaultWeek = (): DayAvailability[] => {
+    const week: DayAvailability[] = [];
+    for (let dayName in Day) {
         //if(isNaN(Number(dayName))){
-            console.log("Day name: ", dayName);
-            const weekDay = new DayAvailability();
-            weekDay.day = mapDayStringToDayEnum(dayName);
-            weekDay.fromTimeHour = 10;
-            weekDay.endTimeHour = 18;
-            weekDay.fromTimeMinute = 0;
-            weekDay.endTimeMinute = 0;
-            weekDay.active = true;
-            week.push(weekDay);
+        const weekDay = new DayAvailability();
+        weekDay.day = mapDayStringToDayEnum(dayName);
+        weekDay.fromTimeHour = 10;
+        weekDay.endTimeHour = 18;
+        weekDay.fromTimeMinute = 0;
+        weekDay.endTimeMinute = 0;
+        weekDay.active = true;
+        week.push(weekDay);
         //}
     }
     console.log("created following week:", week);
@@ -70,7 +68,7 @@ export const createDayAvailabitily = async (req: Request, res: Response) => {
         console.log("availableTimeController: create:", error)
         res.status(500).send();
     }
-    
+
 }
 
 export const deleteDayAvailability = async (req: Request, res: Response) => {
@@ -97,10 +95,10 @@ export const patchDayAvailability = async (req: Request, res: Response) => {
     const userRepository = getRepository(User);
 
     try {
-        const user = await  userRepository.findOneOrFail({relations: ['availableTime'], where: {id: userId }});
+        const user = await userRepository.findOneOrFail({ relations: ['availableTime'], where: { id: userId } });
         console.log("patchDayAvailability vor update", user.availableTime);
-        for(let i = 0; i < user.availableTime.length; i++){
-            if(user.availableTime[i].day == dayAvailability.day){
+        for (let i = 0; i < user.availableTime.length; i++) {
+            if (user.availableTime[i].day == dayAvailability.day) {
                 Object.assign(user.availableTime[i], dayAvailability);
                 break;
             }
