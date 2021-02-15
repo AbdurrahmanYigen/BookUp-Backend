@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createBooking, deleteBookingById, getAllBookings, patchBookingById } from "../controller/booking.controller";
+import { createBooking, deleteBookingById, getAllBookings, getAllBookingsOfUser, patchBookingById } from "../controller/booking.controller";
 
 
 export const bookingRouter = Router({mergeParams: true});
@@ -15,3 +15,5 @@ bookingRouter.delete('/:bookingId', deleteBookingById);
 
 //update invitee
 bookingRouter.patch('/:inviteeId', patchBookingById);
+
+bookingRouter.get('/all/:userId', getAllBookingsOfUser);

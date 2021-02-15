@@ -20,14 +20,19 @@ export const getAllInvitees = async(_: Request, res: Response) => {
 
 };
 
+export const createInviteeInternal = (firstname: string, lastname: string, email: string) : Invitee => {
+    const invitee = new Invitee();
+    invitee.firstName = firstname;
+    invitee.lastName = lastname;
+    invitee.email = email;
+    return invitee;
+}
+
 export const createInvitee = async(req: Request, res: Response) => {
     const { firstname, lastname, email} = req.body;
     const inviteeRepository = await getRepository(Invitee);
-    const invitee = new Invitee();
     try {
-        invitee.firstName = firstname;
-        invitee.lastName = lastname;
-        invitee.email = email;
+        const invitee = createInviteeInternal(firstname, lastname, email);
 
         const createdInvitee = await inviteeRepository.save(invitee);
         res.send({

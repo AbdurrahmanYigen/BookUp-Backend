@@ -98,7 +98,7 @@ export const getUserById = async (req: Request, res: Response) => {
 export const getAllUsers = async (_: Request, res: Response) => {
     const userRepository = getRepository(User);
     try {
-        const users = await userRepository.find({ relations: ['availableTime'] })
+        const users = await userRepository.find({ relations: ['availableTime', 'eventTypes'] });
         res.send({
             data: users,
         });
@@ -227,6 +227,3 @@ export const loginUser = async (req: Request, res: Response) => {
         data: token,
     });
 };
-
-
-

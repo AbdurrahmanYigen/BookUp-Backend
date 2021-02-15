@@ -25,7 +25,6 @@ export class EventType{
     @OneToMany(() => Booking, booking => booking.eventType, { onDelete: 'CASCADE'})
     bookings: Booking[];
 
-
     @CreateDateColumn()
     createdAt: string;
 
