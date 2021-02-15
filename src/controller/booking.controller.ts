@@ -34,7 +34,7 @@ export const createBooking = async(req: Request, res: Response) => {
     try {
         booking.date = date;
         booking.status = status;
-        const newInvitee = createInviteeInternal(invitee.firstname, invitee.lastname, invitee.email);
+        const newInvitee = createInviteeInternal(invitee.firstName, invitee.lastName, invitee.email);
         const createdInvitee = await inviteeRepository.save(newInvitee);
         booking.invitee = createdInvitee;
         booking.eventType = eventType;
@@ -111,13 +111,15 @@ export const getAllBookingsOfUser = async (req: Request, res: Response) => {
         let bookings : Booking[] = [];
         const eventTypesOfUser = await (
             await userRepository.findOneOrFail({
-                relations: ['eventTypes, eventTypes.bookings'],
+                relations: ['eventTypes', 'eventTypes.bookings', 'eventTypes.bookings.invitee'],
                 where: {id: userId}
             })
             ).eventTypes;
 
+            //console.log("BRRRRRRRRRRRRRRRRRRRRRR", eventTypesOfUser);
         for( let event of eventTypesOfUser){
-            bookings.concat(event.bookings);
+            console.log("BOOKINGSS",event.bookings);
+            bookings = bookings.concat(event.bookings);
         }
 
         res.send({

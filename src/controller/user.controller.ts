@@ -98,7 +98,7 @@ export const getUserById = async (req: Request, res: Response) => {
 export const getAllUsers = async (_: Request, res: Response) => {
     const userRepository = getRepository(User);
     try {
-        const users = await userRepository.find({ relations: ['availableTime', 'eventTypes'] });
+        const users = await userRepository.find({ relations: ['availableTime', 'eventTypes', 'eventTypes.bookings'] });
         res.send({
             data: users,
         });
