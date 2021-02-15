@@ -3,6 +3,8 @@ import { getRepository } from "typeorm";
 import { Booking } from "../entity/Booking";
 import { Invitee } from "../entity/Invitee";
 import { User } from "../entity/User";
+//import { User } from "../entity/User";
+// import { User } from "../entity/User";
 import { createInviteeInternal } from "./invitee.controller";
 // import { EventType } from "../entity/EventType";
 // import { Invitee } from "../entity/Invitee";
@@ -108,7 +110,7 @@ export const getAllBookingsOfUser = async (req: Request, res: Response) => {
     const userRepository = getRepository(User);
 
     try {
-        let bookings : Booking[] = [];
+        let bookings = [];
         const eventTypesOfUser = await (
             await userRepository.findOneOrFail({
                 relations: ['eventTypes', 'eventTypes.bookings', 'eventTypes.bookings.invitee'],
@@ -116,10 +118,19 @@ export const getAllBookingsOfUser = async (req: Request, res: Response) => {
             })
             ).eventTypes;
 
-            //console.log("BRRRRRRRRRRRRRRRRRRRRRR", eventTypesOfUser);
+        let index = 0;
         for( let event of eventTypesOfUser){
-            console.log("BOOKINGSS",event.bookings);
-            bookings = bookings.concat(event.bookings);
+            // console.log("BOOKINGSS",event.bookings);
+            if(event.bookings.length > 0){
+                bookings[index] = {
+                    "eventTitle": event.title,
+                    "eventDescription": event.description, 
+                    "eventDuration": event.duration,
+                    "bookings":event.bookings
+                };
+            }
+            // bookings = bookings.concat(event.bookings);
+            index++;
         }
 
         res.send({
