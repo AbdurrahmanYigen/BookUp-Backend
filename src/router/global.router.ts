@@ -1,4 +1,4 @@
-import { Request, Response, Router } from "express";
+import express, { Request, Response, Router } from "express";
 import { dayAvailabilityRouter } from "./dayAvailability.router";
 import { bookingRouter } from "./booking.router";
 import { inviteeRouter } from "./invitee.router";
@@ -12,7 +12,6 @@ globalRouter.get('/', async (_: Request, res: Response) => {
 
 globalRouter.use('/user', userRouter);
 globalRouter.use('/availability', dayAvailabilityRouter);
-
 globalRouter.use('/invitee', inviteeRouter);
-
 globalRouter.use('/booking', bookingRouter);
+globalRouter.use('/profilePhoto', express.static("uploads"));
