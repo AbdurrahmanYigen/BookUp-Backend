@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { getRepository } from "typeorm";
 import { EventType } from "../entity/EventType";
+import { ProfilePhoto } from "../entity/ProfilePhoto";
 import { User } from "../entity/User";
 import { Authentication } from "../middleware/authentication";
 import { getDefaultWeek } from "./dayAvailability.controller";
-
 
 //Create Event to user
 export const createEvent = async (req: Request, res: Response) => {
@@ -84,7 +84,7 @@ export const getUserById = async (req: Request, res: Response) => {
     const userRepository = getRepository(User);
     let userId = req.params.userId;
     try {
-        let user = await userRepository.findOneOrFail({ relations: ['eventTypes'], where: { id: userId } });
+        let user = await userRepository.findOneOrFail({ relations: ['eventTypes', 'imageId'], where: { id: userId } });
         res.send({
             data: user
         })
@@ -140,7 +140,28 @@ export const patchUserById = async (req: Request, res: Response) => {
             status: "Internal Error",
         });
     }
+}
 
+export const uploadImage = async (req: Request, res: Response) => {
+    const userId = req.params.userId;
+    const userRepository = getRepository(User);
+    const imageRepository = getRepository(ProfilePhoto);
+    const tempImage = new ProfilePhoto();
+    try {
+        const user = await userRepository.findOneOrFail(userId);
+        tempImage.url = req.file.filename;
+        const uploadedImage = await imageRepository.save(tempImage);
+        user.imageId = uploadedImage;
+        await userRepository.save(user);
+        res.send({
+            data: tempImage,
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(404).send({
+            status: "user not found"
+        })
+    }
 }
 
 export const deleteUserById = async (req: Request, res: Response) => {
@@ -207,7 +228,6 @@ export const loginUser = async (req: Request, res: Response) => {
             email: email
         }
     })
-
     if (!user) {
         return res.status(401).send({ status: 'unauthorized' });
     }
