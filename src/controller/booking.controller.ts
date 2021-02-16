@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { getRepository } from "typeorm";
 import { Booking } from "../entity/Booking";
 import { Invitee } from "../entity/Invitee";
-import { User } from "../entity/User";
+// import { User } from "../entity/User";
 //import { User } from "../entity/User";
 // import { User } from "../entity/User";
 import { createInviteeInternal } from "./invitee.controller";
@@ -107,34 +107,18 @@ export const patchBookingById = async(req: Request, res: Response) => {
 
 export const getAllBookingsOfUser = async (req: Request, res: Response) => {
     const userId = req.params.userId;
-    const userRepository = getRepository(User);
+    // const userRepository = getRepository(User);
+    const BookingRepo = getRepository(Booking)
 
     try {
-        let bookings = [];
-        const eventTypesOfUser = await (
-            await userRepository.findOneOrFail({
-                relations: ['eventTypes', 'eventTypes.bookings', 'eventTypes.bookings.invitee'],
-                where: {id: userId}
-            })
-            ).eventTypes;
-
-        let index = 0;
-        for( let event of eventTypesOfUser){
-            // console.log("BOOKINGSS",event.bookings);
-            if(event.bookings.length > 0){
-                bookings[index] = {
-                    "eventTitle": event.title,
-                    "eventDescription": event.description, 
-                    "eventDuration": event.duration,
-                    "bookings":event.bookings
-                };
-            }
-            // bookings = bookings.concat(event.bookings);
-            index++;
-        }
+        const BookedEVENT = await BookingRepo.createQueryBuilder("booking").leftJoinAndSelect("booking.invitee" , "invitee")
+        .leftJoinAndSelect("booking.eventType", "eventType")
+        .where("eventType.user.id = :userid", {userid : userId})
+        // .groupBy("booking.id")
+        .getMany();
 
         res.send({
-            data: bookings
+            data: BookedEVENT
         });
     } catch (error) {
         console.log("getAllBookingsOfUder: ", error);
