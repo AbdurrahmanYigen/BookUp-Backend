@@ -122,7 +122,8 @@ export const patchUserById = async (req: Request, res: Response) => {
             user.userName = userName;
         }
         if ('password' in req.body) {
-            user.password = password;
+            const hashedPassword: string = await Authentication.hashPassword(password)
+            user.password = hashedPassword;
         }
         else if ('email' in req.body) {
             user.email = email
