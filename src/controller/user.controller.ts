@@ -84,7 +84,7 @@ export const getUserById = async (req: Request, res: Response) => {
     const userRepository = getRepository(User);
     let userId = req.params.userId;
     try {
-        let user = await userRepository.findOneOrFail({ relations: ['eventTypes'], where: { id: userId } });
+        let user = await userRepository.findOneOrFail({ relations: ['availableTime', 'eventTypes', 'eventTypes.bookings'], where: { id: userId } });
         res.send({
             data: user
         })
