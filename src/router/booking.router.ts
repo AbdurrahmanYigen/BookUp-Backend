@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { createBooking, deleteBookingById, getAllBookings, getAllBookingsOfUser, patchBookingById } from "../controller/booking.controller";
+import { createBooking, deleteBookingById, getAllBookings, getAllBookingsOfUser, getAvailableTimeForDate, patchBookingById } from "../controller/booking.controller";
 
 
-export const bookingRouter = Router({mergeParams: true});
+export const bookingRouter = Router({ mergeParams: true });
 
 //get all bookings
 bookingRouter.get('/', getAllBookings);
@@ -17,3 +17,6 @@ bookingRouter.delete('/:bookingId', deleteBookingById);
 bookingRouter.patch('/:inviteeId', patchBookingById);
 
 bookingRouter.get('/all/:userId', getAllBookingsOfUser);
+
+//get available time for day
+bookingRouter.get('/:offerId', getAvailableTimeForDate)

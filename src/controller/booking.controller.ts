@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
+import moment from "moment";
 import { getRepository } from "typeorm";
 import { Booking } from "../entity/Booking";
+import { DayAvailability } from "../entity/DayAvailability";
+import { EventType } from "../entity/EventType";
 import { Invitee } from "../entity/Invitee";
 // import { User } from "../entity/User";
 //import { User } from "../entity/User";
@@ -9,15 +12,15 @@ import { createInviteeInternal } from "./invitee.controller";
 // import { EventType } from "../entity/EventType";
 // import { Invitee } from "../entity/Invitee";
 
-export const getAllBookings = async(_: Request, res: Response) => {
+export const getAllBookings = async (_: Request, res: Response) => {
     const bookingRepository = await getRepository(Booking);
     try {
-        const bookings = await bookingRepository.find({relations: ['invitee', 'eventType', 'eventType.user']});
+        const bookings = await bookingRepository.find({ relations: ['invitee', 'eventType', 'eventType.user'] });
 
         res.send({
             data: bookings,
         });
-        
+
     } catch (e) {
         console.error(e);
         res.status(400).send({
@@ -27,9 +30,9 @@ export const getAllBookings = async(_: Request, res: Response) => {
 }
 
 
-export const createBooking = async(req: Request, res: Response) => {
+export const createBooking = async (req: Request, res: Response) => {
     const bookingRepository = await getRepository(Booking);
-    const {date, status, invitee, eventType} = req.body;
+    const { date, status, invitee, eventType } = req.body;
     const inviteeRepository = getRepository(Invitee);
     const booking = new Booking();
 
@@ -54,7 +57,7 @@ export const createBooking = async(req: Request, res: Response) => {
     };
 }
 
-export const deleteBookingById = async(req: Request, res: Response) => {
+export const deleteBookingById = async (req: Request, res: Response) => {
     const bookingRepository = await getRepository(Booking);
     const bookingId = req.params.bookingId;
 
@@ -73,7 +76,7 @@ export const deleteBookingById = async(req: Request, res: Response) => {
     }
 }
 
-export const patchBookingById = async(req: Request, res: Response) => {
+export const patchBookingById = async (req: Request, res: Response) => {
     const bookingRepository = await getRepository(Booking);
     const bookingId = req.params.bookingId;
 
@@ -111,11 +114,11 @@ export const getAllBookingsOfUser = async (req: Request, res: Response) => {
     const BookingRepo = getRepository(Booking)
 
     try {
-        const BookedEVENT = await BookingRepo.createQueryBuilder("booking").leftJoinAndSelect("booking.invitee" , "invitee")
-        .leftJoinAndSelect("booking.eventType", "eventType")
-        .where("eventType.user.id = :userid", {userid : userId})
-        // .groupBy("booking.id")
-        .getMany();
+        const BookedEVENT = await BookingRepo.createQueryBuilder("booking").leftJoinAndSelect("booking.invitee", "invitee")
+            .leftJoinAndSelect("booking.eventType", "eventType")
+            .where("eventType.user.id = :userid", { userid: userId })
+            // .groupBy("booking.id")
+            .getMany();
 
         res.send({
             data: BookedEVENT
@@ -126,4 +129,49 @@ export const getAllBookingsOfUser = async (req: Request, res: Response) => {
             msg: 'server_error'
         })
     }
+}
+
+export const getAvailableTimeForDate = async (req: Request, res: Response) => {
+    const offerId = req.params.offerId;
+    const date: Date = new Date(req.body.date);
+    // const bookingStartTime = req.body.bookingStartTime;
+    const offerRepository = getRepository(EventType);
+    try {
+        const offer = await offerRepository.findOneOrFail({ relations: ['user', 'bookings', 'user.availableTime'], where: { id: offerId } });
+        const dayOfBooking = offer.user.availableTime[date.getDay()];
+        if (!dayOfBooking.active) {
+            res.send({
+                data: [],
+            })
+        }
+        res.send({
+            data: generateBookableTime(dayOfBooking, offer, date)
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const generateBookableTime = (dayAvailability: DayAvailability, offer: EventType, relevantDate: Date) => {
+    const duration = offer.duration;
+
+    const availableStartTime = moment().set({ hour: dayAvailability.fromTimeHour, minute: dayAvailability.fromTimeMinute, second: 0, millisecond: 0 });
+    const availableEndTime = moment().set({ hour: dayAvailability.endTimeHour, minute: dayAvailability.endTimeMinute, second: 0, millisecond: 0 });
+
+    let bookableTimeDavid: { hour: string, minute: string, }[] = [];
+    const tempStartTime = moment(availableStartTime);
+
+    while (tempStartTime.isBefore(availableEndTime, "hour")) {
+        bookableTimeDavid.push({ "hour": tempStartTime.format("HH"), "minute": tempStartTime.format("mm") });
+        tempStartTime.add(duration, "minutes");
+    }
+
+    for (const booking of offer.bookings) {
+        if (booking.date.toDateString() == relevantDate.toDateString()) {
+            let startTimeOfBooking = moment(booking.date);
+            bookableTimeDavid = bookableTimeDavid.filter((item) => !(startTimeOfBooking.format("HH") === item.hour && startTimeOfBooking.format("mm") === item.minute))
+        }
+    }
+
+    return bookableTimeDavid;
 }
