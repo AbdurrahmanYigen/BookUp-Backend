@@ -133,7 +133,9 @@ export const getAllBookingsOfUser = async (req: Request, res: Response) => {
 
 export const getAvailableTimeForDate = async (req: Request, res: Response) => {
     const offerId = req.params.offerId;
-    const date: Date = new Date(req.body.date);
+    const date: Date = new Date(req.query.date as string);
+
+    console.log(date)
     // const bookingStartTime = req.body.bookingStartTime;
     const offerRepository = getRepository(EventType);
     try {
@@ -158,18 +160,18 @@ const generateBookableTime = (dayAvailability: DayAvailability, offer: EventType
     const availableStartTime = moment().set({ hour: dayAvailability.fromTimeHour, minute: dayAvailability.fromTimeMinute, second: 0, millisecond: 0 });
     const availableEndTime = moment().set({ hour: dayAvailability.endTimeHour, minute: dayAvailability.endTimeMinute, second: 0, millisecond: 0 });
 
-    let bookableTimeDavid: { hour: string, minute: string, }[] = [];
+    let bookableTimeDavid: { hours: string, minutes: string, }[] = [];
     const tempStartTime = moment(availableStartTime);
 
     while (tempStartTime.isBefore(availableEndTime, "hour")) {
-        bookableTimeDavid.push({ "hour": tempStartTime.format("HH"), "minute": tempStartTime.format("mm") });
+        bookableTimeDavid.push({ "hours": tempStartTime.format("HH"), "minutes": tempStartTime.format("mm") });
         tempStartTime.add(duration, "minutes");
     }
 
     for (const booking of offer.bookings) {
         if (booking.date.toDateString() == relevantDate.toDateString()) {
             let startTimeOfBooking = moment(booking.date);
-            bookableTimeDavid = bookableTimeDavid.filter((item) => !(startTimeOfBooking.format("HH") === item.hour && startTimeOfBooking.format("mm") === item.minute))
+            bookableTimeDavid = bookableTimeDavid.filter((item) => !(startTimeOfBooking.format("HH") === item.hours && startTimeOfBooking.format("mm") === item.minutes))
         }
     }
 
