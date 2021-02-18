@@ -10,7 +10,7 @@ export class EventType{
     @Column()
     title: string;
 
-    @Column()
+    @Column({ length: '4096' })
     description: string;
 
     @Column()
