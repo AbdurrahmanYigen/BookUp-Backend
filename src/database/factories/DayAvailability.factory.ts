@@ -10,10 +10,10 @@ define(DayAvailability, (faker: typeof Faker) => {
 
     const dayAvailability = new DayAvailability();
     dayAvailability.day = Day[dayAvailabilityString];
-    dayAvailability.fromTimeHour = faker.random.number();
-    dayAvailability.fromTimeMinute = faker.random.number();
-    dayAvailability.endTimeHour = faker.random.number();
-    dayAvailability.endTimeMinute = faker.random.number();
+    dayAvailability.endTimeHour = faker.random.number(23);
+    dayAvailability.endTimeMinute = faker.random.number(59);
+    dayAvailability.fromTimeHour = faker.random.number(dayAvailability.endTimeHour);
+    dayAvailability.fromTimeMinute = faker.random.number(dayAvailability.endTimeMinute);
     dayAvailability.active = faker.random.boolean();
     dayAvailability.user = factory(User)() as any;
 
