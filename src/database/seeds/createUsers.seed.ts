@@ -8,7 +8,6 @@ export default class CreateUsers implements Seeder {
   public async run(factory: Factory): Promise<any> {
     const password = await Authentication.hashPassword('test');
 
-    await factory(User)().create({ email: 'test@gmail.com', password });
     await factory(User)().createMany(10, { password });
   }
 }
