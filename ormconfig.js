@@ -31,5 +31,7 @@ const config = {
         migrationsDir: prefix('migration'),
         subscribersDir: prefix('{subscriber,domain,projection}'),
     },
+    factories: [ prefix('database/factories/**/*{.ts,.js}') ],
+    seeds: [ prefix('database/seeds/**/*{.ts,.js}') ]
 };
 module.exports = config;

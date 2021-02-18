@@ -45,7 +45,7 @@ export const getDefaultWeek = (): DayAvailability[] => {
         week.push(weekDay);
         //}
     }
-    console.log("created following week:", week);
+    // console.log("created following week:", week);
     return week;
 }
 
