@@ -6,10 +6,6 @@ import request from 'supertest';
 import { Helper } from '../helper';
 import { Booking } from '../../src/entity/Booking';
 import { EventType } from '../../src/entity/EventType';
-// import { Status } from '../../src/enums/status';
-// import { DayAvailability } from '../../src/entity/DayAvailability';
-// import { User } from '../../src/entity/User';
-// import { DayAvailability } from '../../src/entity/DayAvailability';
 
 describe('Booking', () => {
     const helper = new Helper();
@@ -33,9 +29,6 @@ describe('Booking', () => {
             if(err) throw err;
             const booking = await helper.getRepo(Booking).find({});
             expect(booking.length).toBe(1)
-            // expect(res.body.length).toBe(1);  
-            // expect(res.body.data.userName).toBe("FWE-Developer");
-            // expect(res.body.data.email).toBe("test@hda.de");
             done();
         })
     })
@@ -84,10 +77,12 @@ describe('Booking', () => {
     it('should delete booking by id', async(done) => {
         await helper.resetDatabase();
         await helper.loadFixtures();
+        const authToken = await helper.loginUser('test@hda.de');
         request(helper.app)
         .delete(`/api/booking/1`)
         .set('Content-Type', 'application/json')
         .set('Accept', 'application/json')
+        .set('Authorization', authToken)
         .end(async(err , _res) => {
             if(err) throw err;
             const booking = await helper.getRepo(Booking).find({});
@@ -95,36 +90,4 @@ describe('Booking', () => {
             done();
         })
     })
-
-    it('should update booking by id', async(done) => {
-        await helper.resetDatabase();
-        await helper.loadFixtures();
-        const date = new Date('1995-12-17T03:24:00')
-        const eventType = new EventType()
-        eventType.link = "englishsession/12"
-        eventType.duration = 12
-        eventType.description = "Studyenglish"
-        eventType.title = "englishsession"
-        request(helper.app)
-        .patch(`/api/booking/1`)
-        .set('Content-Type', 'application/json')
-        .set('Accept', 'application/json')
-        .send({
-            "date" : date,
-            "status" : 0,
-        })
-        .end(async(err , _res) => {
-            if(err) throw err;
-            const booking = await helper.getRepo(Booking).find({});
-            expect(booking.length).toBe(1)
-            expect(booking[0].status).toBe(0)
-            done();
-        })
-    })
-
-    
-
-
-
- 
 })

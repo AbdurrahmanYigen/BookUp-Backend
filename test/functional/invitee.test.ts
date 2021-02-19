@@ -72,27 +72,4 @@ describe('Invitee test', () => {
             done();
         })
     })
-    
-    it('should updated an Invitee by id', async(done) =>{
-        await helper.resetDatabase();
-        await helper.loadFixtures();
-        request(helper.app)
-        .patch('/api/invitee/1')
-        .set('Content-Type', 'application/json')
-        .set('Accept', 'application/json')
-        .send({
-            "firstname" : "testupdated2",
-            "lastname" : "userupdated2",
-            "email": "testinviteeupdated@gmail.com"
-        })
-        .end(async(err , _res) => {
-            if(err) throw err;
-            const invitee = await helper.getRepo(Invitee).find({});
-            expect(invitee.length).toBe(1);
-            expect(invitee[0].firstName).toBe("testupdated2");
-            expect(invitee[0].lastName).toBe("userupdated2");
-            expect(invitee[0].email).toBe("testinviteeupdated@gmail.com");
-            done();
-        })
-    })
 })

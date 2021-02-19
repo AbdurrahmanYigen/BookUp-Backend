@@ -76,38 +76,6 @@ export const deleteBookingById = async (req: Request, res: Response) => {
     }
 }
 
-export const patchBookingById = async (req: Request, res: Response) => {
-    const bookingRepository = await getRepository(Booking);
-    const bookingId = req.params.bookingId;
-
-    let oldBooking = new Booking();
-
-    try {
-        oldBooking = await bookingRepository.findOneOrFail(bookingId);
-        let newBooking = new Booking();
-        newBooking = req.body;
-
-        Object.assign(oldBooking, newBooking);
-        await bookingRepository.save(oldBooking);
-
-        //vielleicht überflüssig
-        let correctDataOutput = new Booking();
-        correctDataOutput = await bookingRepository.findOneOrFail(bookingId);
-        console.log("patch Invitee was successfully.")
-
-        res.send({
-            data: correctDataOutput,
-        });
-
-
-    } catch (e) {
-        console.error(e);
-        res.status(400).send({
-            status: "Internal Error",
-        });
-    }
-}
-
 export const getAllBookingsOfUser = async (req: Request, res: Response) => {
     const userId = req.params.userId;
     // const userRepository = getRepository(User);
