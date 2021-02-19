@@ -6,10 +6,17 @@ before_script:
     - gem install dpl
 
 stages:
-    - staging
+    - test
     - production
 
-staging:
+test:
+  stage: test
+  before_script:
+    - npm ci
+  script:
+    - npm run test:ci
+
+production:
     type: deploy
     stage: production
     image: ruby:latest
