@@ -171,8 +171,8 @@ const generateBookableTime = (dayAvailability: DayAvailability, offer: EventType
 
     for (const booking of offer.bookings) {
         if (booking.date.toDateString() == relevantDate.toDateString()) {
-            let startTimeOfBooking = moment(booking.date);
-            bookableTime = bookableTime.filter((item) => !(startTimeOfBooking.format("HH") === item.hours && startTimeOfBooking.format("mm") === item.minutes))
+            let startTimeOfBooking = moment(booking.date).add(1, "hours");
+            bookableTime = bookableTime.filter((item) => !(startTimeOfBooking.format("HH") === (item.hours) && startTimeOfBooking.format("mm") === item.minutes))
         }
     }
     console.log(bookableTime)
