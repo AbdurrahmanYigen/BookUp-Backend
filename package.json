@@ -7,13 +7,14 @@
     "test": "jest --verbose --coverage --forceExit --runInBand",
     "test:watch": "jest --watchAll --verbose --runInBand",
     "test:ci": "jest --verbose --coverage --ci --forceExit --detectOpenHandles --runInBand",
-    "start": "node dist/index.js",
+    "start": "node dist/src/index.js",
     "build": "tsc -b .",
     "dev": "tsc-watch --outDir ./dist --onSuccess \"node --inspect=0.0.0.0:9229 ./dist/src/index\"",
     "lint": "tslint --project .",
     "typeorm": "node ./node_modules/typeorm/cli.js",
     "seed:config": "ts-node ./node_modules/typeorm-seeding/dist/cli.js config ",
-    "seed:run": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed"
+    "seed:run": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed",
+    "heroku-postbuild": "tsc -b . && npm run typeorm schema:drop && npm run typeorm schema:sync && npm run seed:run"
   },
   "keywords": [
     "Finance",
@@ -36,6 +37,7 @@
     "mysql2": "^2.2.5",
     "reflect-metadata": "^0.1.13",
     "ts-jest": "^26.5.1",
+    "ts-node": "^9.1.1",
     "tsc-watch": "^4.2.3",
     "typeorm": "^0.2.30",
     "typeorm-fixtures-cli": "^1.9.1",
@@ -56,5 +58,6 @@
     "tslint-config-prettier": "^1.18.0",
     "tslint-etc": "^1.10.1",
     "tslint-plugin-prettier": "^2.3.0"
-  }
+  },
+  "heroku-run-build-script": true
 }
