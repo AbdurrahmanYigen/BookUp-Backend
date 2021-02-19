@@ -11,7 +11,7 @@ define(User, (faker: typeof Faker) => {
     user.email = faker.internet.email();
     user.password = 'hash';
     user.availableTime = getDefaultWeek();
-    user.imageId = factory(ProfilePhoto)() as any;
+    user.image = factory(ProfilePhoto)() as any;
 
     return user;
 });

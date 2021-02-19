@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createEvent, DeleteEvent, deleteUserById, getAllUsers, getEventFromUserId, getUserById, loginUser, patchUserById, registerUser, updateEvent, uploadImage } from "../controller/user.controller";
+import { createOffer, DeleteOffer, deleteUserById, getAllUsers, getOfferFromUserId, getUserById, loginUser, patchUserById, registerUser, updateOffer, uploadImage } from "../controller/user.controller";
 import path from "path";
 export const userRouter = Router({ mergeParams: true });
 
@@ -16,20 +16,17 @@ var storage = multer.diskStorage({
 })
 const upload = multer({ storage: storage });
 
+//Add Offer to user
+userRouter.post('/:userid/offer', createOffer);
 
+//Get Offers from Userid
+userRouter.get('/:userId/offers', getOfferFromUserId);
 
+//Update Offer
+userRouter.patch('/:userid/offer/:offerId', updateOffer);
 
-//Add Event to user
-userRouter.post('/:userid/eventType', createEvent);
-
-//Get Events from Userid
-userRouter.get('/:userId/eventTypes', getEventFromUserId);
-
-//Update Event
-userRouter.patch('/:userid/eventType/:eventid', updateEvent);
-
-//Delete Event
-userRouter.delete('/:userid/eventType/:eventid', DeleteEvent);
+//Delete Offer
+userRouter.delete('/:userid/offer/:offerId', DeleteOffer);
 
 //Get User by Id
 userRouter.get('/:userId', getUserById);

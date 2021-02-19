@@ -3,7 +3,7 @@ import { Booking } from "./Booking";
 import { User } from './User';
 
 @Entity()
-export class EventType{
+export class Offer {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -16,13 +16,10 @@ export class EventType{
     @Column()
     duration: number;
 
-    @Column()
-    link: string;
-
-    @ManyToOne(() => User, user => user.eventTypes, { onDelete: 'CASCADE' })
+    @ManyToOne(() => User, user => user.offers, { onDelete: 'CASCADE' })
     user: User;
 
-    @OneToMany(() => Booking, booking => booking.eventType, { onDelete: 'CASCADE'})
+    @OneToMany(() => Booking, booking => booking.offer, { onDelete: 'CASCADE' })
     bookings: Booking[];
 
     @CreateDateColumn()

@@ -3,19 +3,14 @@ import moment from "moment";
 import { getRepository } from "typeorm";
 import { Booking } from "../entity/Booking";
 import { DayAvailability } from "../entity/DayAvailability";
-import { EventType } from "../entity/EventType";
+import { Offer } from "../entity/Offer";
 import { Invitee } from "../entity/Invitee";
-// import { User } from "../entity/User";
-//import { User } from "../entity/User";
-// import { User } from "../entity/User";
 import { createInviteeInternal } from "./invitee.controller";
-// import { EventType } from "../entity/EventType";
-// import { Invitee } from "../entity/Invitee";
 
 export const getAllBookings = async (_: Request, res: Response) => {
     const bookingRepository = await getRepository(Booking);
     try {
-        const bookings = await bookingRepository.find({ relations: ['invitee', 'eventType', 'eventType.user'] });
+        const bookings = await bookingRepository.find({ relations: ['invitee', 'offer', 'offer.user'] });
 
         res.send({
             data: bookings,
@@ -32,7 +27,7 @@ export const getAllBookings = async (_: Request, res: Response) => {
 
 export const createBooking = async (req: Request, res: Response) => {
     const bookingRepository = await getRepository(Booking);
-    const { date, status, invitee, eventType } = req.body;
+    const { date, status, invitee, offer: offer } = req.body;
     const inviteeRepository = getRepository(Invitee);
     const booking = new Booking();
 
@@ -42,7 +37,7 @@ export const createBooking = async (req: Request, res: Response) => {
         const newInvitee = createInviteeInternal(invitee.firstName, invitee.lastName, invitee.email);
         const createdInvitee = await inviteeRepository.save(newInvitee);
         booking.invitee = createdInvitee;
-        booking.eventType = eventType;
+        booking.offer = offer;
         console.log(booking)
         const createdBooking = await bookingRepository.save(booking);
         res.send({
@@ -114,14 +109,14 @@ export const getAllBookingsOfUser = async (req: Request, res: Response) => {
     const BookingRepo = getRepository(Booking)
 
     try {
-        const BookedEVENT = await BookingRepo.createQueryBuilder("booking").leftJoinAndSelect("booking.invitee", "invitee")
-            .leftJoinAndSelect("booking.eventType", "eventType")
-            .where("eventType.user.id = :userid", { userid: userId })
+        const BookedOffer = await BookingRepo.createQueryBuilder("booking").leftJoinAndSelect("booking.invitee", "invitee")
+            .leftJoinAndSelect("booking.offer", "offer")
+            .where("offer.user.id = :userid", { userid: userId })
             // .groupBy("booking.id")
             .getMany();
 
         res.send({
-            data: BookedEVENT
+            data: BookedOffer
         });
     } catch (error) {
         console.log("getAllBookingsOfUder: ", error);
@@ -137,7 +132,7 @@ export const getAvailableTimeForDate = async (req: Request, res: Response) => {
 
     console.log(date)
     // const bookingStartTime = req.body.bookingStartTime;
-    const offerRepository = getRepository(EventType);
+    const offerRepository = getRepository(Offer);
     try {
         const offer = await offerRepository.findOneOrFail({ relations: ['user', 'bookings', 'user.availableTime'], where: { id: offerId } });
         // console.log(date.getDay())
@@ -155,7 +150,7 @@ export const getAvailableTimeForDate = async (req: Request, res: Response) => {
     }
 }
 
-const generateBookableTime = (dayAvailability: DayAvailability, offer: EventType, relevantDate: Date) => {
+const generateBookableTime = (dayAvailability: DayAvailability, offer: Offer, relevantDate: Date) => {
     const duration = offer.duration;
 
     const availableStartTime = moment().set({ hour: dayAvailability.fromTimeHour, minute: dayAvailability.fromTimeMinute, second: 0, millisecond: 0 });

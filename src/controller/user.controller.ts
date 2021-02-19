@@ -1,41 +1,40 @@
 import { Request, Response } from "express";
 import { getRepository } from "typeorm";
-import { EventType } from "../entity/EventType";
+import { Offer } from "../entity/Offer";
 import { ProfilePhoto } from "../entity/ProfilePhoto";
 import { User } from "../entity/User";
 import { Authentication } from "../middleware/authentication";
 import { getDefaultWeek } from "./dayAvailability.controller";
 
-//Create Event to user
-export const createEvent = async (req: Request, res: Response) => {
+//Create Offer to user
+export const createOffer = async (req: Request, res: Response) => {
     let userid = req.params.userid;
-    let { title, description, duration, link } = req.body;
+    let { title, description, duration } = req.body;
     const userRepository = getRepository(User);
     try {
         let foundUser = await userRepository.findOneOrFail(userid)
-        let newEvent = new EventType()
-        newEvent.title = title
-        newEvent.description = description
-        newEvent.duration = duration
-        newEvent.link = link
-        newEvent.user = foundUser
-        foundUser.eventTypes = [newEvent]
-        await getRepository(EventType).save(newEvent)
-        res.send("Successfully added Event to User")
+        let newOffer = new Offer()
+        newOffer.title = title
+        newOffer.description = description
+        newOffer.duration = duration
+        newOffer.user = foundUser
+        foundUser.offers = [newOffer]
+        await getRepository(Offer).save(newOffer)
+        res.send("Successfully added Offer to User")
     }
     catch (e) {
         res.status(404).send({ status: 'not found' })
     }
 }
 
-//Get Event
-export const getEventFromUserId = async (req: Request, res: Response) => {
+//Get Offer
+export const getOfferFromUserId = async (req: Request, res: Response) => {
     const userRepository = getRepository(User);
     let userId = req.params.userId;
     try {
-        let user = await userRepository.findOneOrFail({ relations: ['eventTypes'], where: { id: userId } });
+        let user = await userRepository.findOneOrFail({ relations: ['offers'], where: { id: userId } });
         res.send({
-            data: user.eventTypes
+            data: user.offers
         })
     }
     catch (e) {
@@ -43,20 +42,19 @@ export const getEventFromUserId = async (req: Request, res: Response) => {
     }
 }
 
-//Update Event 
-export const updateEvent = async (req: Request, res: Response) => {
-    let eventid = req.params.eventid;
-    let { title, description, duration, link } = req.body
-    const eventRepository = getRepository(EventType)
+//Update Offer 
+export const updateOffer = async (req: Request, res: Response) => {
+    let offerId = req.params.offerId;
+    let { title, description, duration } = req.body
+    const offerRepository = getRepository(Offer)
     try {
-        let foundEvent = await eventRepository.findOneOrFail(eventid)
-        foundEvent.title = title
-        foundEvent.duration = duration
-        foundEvent.link = link
-        foundEvent.description = description
-        const updatedEvent = await eventRepository.save(foundEvent)
+        let foundOffer = await offerRepository.findOneOrFail(offerId)
+        foundOffer.title = title
+        foundOffer.duration = duration
+        foundOffer.description = description
+        const updatedOffer = await offerRepository.save(foundOffer)
         res.send({
-            data: updatedEvent
+            data: updatedOffer
         })
     }
     catch (e) {
@@ -65,13 +63,13 @@ export const updateEvent = async (req: Request, res: Response) => {
 
 }
 
-//Delete Event
-export const DeleteEvent = async (req: Request, res: Response) => {
-    let eventid = req.params.eventid;
-    const eventRepository = getRepository(EventType)
+//Delete Offer
+export const DeleteOffer = async (req: Request, res: Response) => {
+    let offerId = req.params.offerId;
+    const offerRepository = getRepository(Offer)
     try {
-        let foundEvent = await eventRepository.findOneOrFail(eventid)
-        await eventRepository.remove(foundEvent)
+        let foundOffer = await offerRepository.findOneOrFail(offerId)
+        await offerRepository.remove(foundOffer)
         res.send("Deleted Successfully")
     }
     catch (e) {
@@ -84,7 +82,7 @@ export const getUserById = async (req: Request, res: Response) => {
     const userRepository = getRepository(User);
     let userId = req.params.userId;
     try {
-        let user = await userRepository.findOneOrFail({ relations: ['availableTime', 'eventTypes', 'eventTypes.bookings', 'imageId'], where: { id: userId } });
+        let user = await userRepository.findOneOrFail({ relations: ['availableTime', 'offers', 'offers.bookings', 'image'], where: { id: userId } });
         res.send({
             data: user
         })
@@ -98,7 +96,7 @@ export const getUserById = async (req: Request, res: Response) => {
 export const getAllUsers = async (_: Request, res: Response) => {
     const userRepository = getRepository(User);
     try {
-        const users = await userRepository.find({ relations: ['availableTime', 'eventTypes', 'eventTypes.bookings'] });
+        const users = await userRepository.find({ relations: ['availableTime', 'offers', 'offers.bookings'] });
         res.send({
             data: users,
         });
@@ -152,7 +150,7 @@ export const uploadImage = async (req: Request, res: Response) => {
         const user = await userRepository.findOneOrFail(userId);
         tempImage.url = req.file.filename;
         const uploadedImage = await imageRepository.save(tempImage);
-        user.imageId = uploadedImage;
+        user.image = uploadedImage;
         await userRepository.save(user);
         res.send({
             data: tempImage,

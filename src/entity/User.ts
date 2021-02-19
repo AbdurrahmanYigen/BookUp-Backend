@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, Timestamp, UpdateDateColumn, DeleteDateColumn, OneToOne, OneToMany, JoinColumn } from 'typeorm'
-import { EventType } from './EventType';
+import { Offer } from './Offer';
 import { DayAvailability } from './DayAvailability';
 import { ProfilePhoto } from './ProfilePhoto';
 
@@ -17,10 +17,10 @@ export class User {
     @Column()
     password: string;
 
-    @OneToMany(() => DayAvailability, dayAvailavbility => dayAvailavbility.user, { 
+    @OneToMany(() => DayAvailability, dayAvailavbility => dayAvailavbility.user, {
         cascade: true,
         onDelete: "CASCADE"
-     })
+    })
     availableTime: DayAvailability[];
 
     @CreateDateColumn()
@@ -28,12 +28,12 @@ export class User {
 
     @OneToOne(() => ProfilePhoto, { onDelete: "CASCADE" })
     @JoinColumn()
-    imageId: ProfilePhoto
+    image: ProfilePhoto
 
-    @OneToMany(() => EventType, eventType => eventType.user, {
+    @OneToMany(() => Offer, offer => offer.user, {
         onDelete: "CASCADE"
     })
-    eventTypes: EventType[]
+    offers: Offer[]
 
     @CreateDateColumn()
     createdAt: Timestamp;

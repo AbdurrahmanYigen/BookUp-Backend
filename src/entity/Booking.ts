@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, DeleteDateColumn, OneToOne, ManyToOne, JoinColumn } from 'typeorm'
 import { Status } from "../enums/status";
-import { EventType } from './EventType';
-import {Invitee} from './Invitee'
+import { Offer } from './Offer';
+import { Invitee } from './Invitee'
 @Entity()
 export class Booking {
 
@@ -9,24 +9,24 @@ export class Booking {
     id: string;
 
     @Column()
-    date:Date
+    date: Date
 
     @CreateDateColumn()
-    createdAt:string;
-    
+    createdAt: string;
+
     @CreateDateColumn()
-    updatedAt:string
+    updatedAt: string
 
     @DeleteDateColumn()
-    deletedAt:string
+    deletedAt: string
 
     @Column()
     status: Status
 
-    @OneToOne(() => Invitee )
+    @OneToOne(() => Invitee)
     @JoinColumn()
-    invitee : Invitee
+    invitee: Invitee
 
-    @ManyToOne(() => EventType, eventType => eventType.bookings, { onDelete: 'CASCADE' })
-    eventType: EventType;
+    @ManyToOne(() => Offer, offer => offer.bookings, { onDelete: 'CASCADE' })
+    offer: Offer;
 }
