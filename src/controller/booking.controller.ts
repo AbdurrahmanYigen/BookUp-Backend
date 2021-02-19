@@ -140,6 +140,7 @@ export const getAvailableTimeForDate = async (req: Request, res: Response) => {
     const offerRepository = getRepository(EventType);
     try {
         const offer = await offerRepository.findOneOrFail({ relations: ['user', 'bookings', 'user.availableTime'], where: { id: offerId } });
+        // console.log(date.getDay())
         const dayOfBooking = offer.user.availableTime[date.getDay()];
         if (!dayOfBooking.active) {
             res.send({
@@ -160,20 +161,20 @@ const generateBookableTime = (dayAvailability: DayAvailability, offer: EventType
     const availableStartTime = moment().set({ hour: dayAvailability.fromTimeHour, minute: dayAvailability.fromTimeMinute, second: 0, millisecond: 0 });
     const availableEndTime = moment().set({ hour: dayAvailability.endTimeHour, minute: dayAvailability.endTimeMinute, second: 0, millisecond: 0 });
 
-    let bookableTimeDavid: { hours: string, minutes: string, }[] = [];
+    let bookableTime: { hours: string, minutes: string, }[] = [];
     const tempStartTime = moment(availableStartTime);
 
     while (tempStartTime.isBefore(availableEndTime, "hour")) {
-        bookableTimeDavid.push({ "hours": tempStartTime.format("HH"), "minutes": tempStartTime.format("mm") });
+        bookableTime.push({ "hours": tempStartTime.format("HH"), "minutes": tempStartTime.format("mm") });
         tempStartTime.add(duration, "minutes");
     }
 
     for (const booking of offer.bookings) {
         if (booking.date.toDateString() == relevantDate.toDateString()) {
             let startTimeOfBooking = moment(booking.date);
-            bookableTimeDavid = bookableTimeDavid.filter((item) => !(startTimeOfBooking.format("HH") === item.hours && startTimeOfBooking.format("mm") === item.minutes))
+            bookableTime = bookableTime.filter((item) => !(startTimeOfBooking.format("HH") === item.hours && startTimeOfBooking.format("mm") === item.minutes))
         }
     }
-
-    return bookableTimeDavid;
+    console.log(bookableTime)
+    return bookableTime;
 }
