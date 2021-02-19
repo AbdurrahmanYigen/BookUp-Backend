@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createInvitee, deleteInviteeById, getAllInvitees, patchInviteeById } from "../controller/invitee.controller";
+import { createInvitee, deleteInviteeById, getAllInvitees } from "../controller/invitee.controller";
 
 export const inviteeRouter = Router({mergeParams: true});
 
@@ -10,7 +10,5 @@ inviteeRouter.get('/', getAllInvitees);
 inviteeRouter.post('/', createInvitee);
 
 //delete invitee
-inviteeRouter.delete('/:inviteeId', deleteInviteeById);
+inviteeRouter.delete('/:inviteeId',  deleteInviteeById);
 
-//update invitee
-inviteeRouter.patch('/:inviteeId', patchInviteeById);

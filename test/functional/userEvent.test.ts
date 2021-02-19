@@ -23,6 +23,7 @@ describe('user', () => {
     it('should add eventType to user' , async(done) => {
         await helper.resetDatabase();
         await helper.loadFixtures();
+        const authToken = await helper.loginUser('test@hda.de');
         request(helper.app)
         .post(`/api/user/1/eventType`)
         .send({
@@ -33,6 +34,7 @@ describe('user', () => {
         })
         .set('Content-Type', 'application/json')
         .set('Accept', 'application/json')
+        .set('Authorization', authToken)
         .end(async(err , _res) => {
             if(err) throw err;
             const evente = await helper.getRepo(EventType).find({});
@@ -49,6 +51,7 @@ describe('user', () => {
     it('should get event from user', async(done) => {
         await helper.resetDatabase();
         await helper.loadFixtures();
+        const authToken = await helper.loginUser('test@hda.de');
         const user = await helper.getRepo(User).findOneOrFail({relations: ['eventTypes'], where:{ id: 1}});
         const newevent = new EventType()
         newevent.title = "test"
@@ -61,6 +64,7 @@ describe('user', () => {
         .get(`/api/user/1/eventTypes`)
         .set('Content-Type', 'application/json')
         .set('Accept', 'application/json')
+        .set('Authorization', authToken)
         .end(async(err , _res) => {
             if(err) throw err;
             const event = await helper.getRepo(EventType).find({})
@@ -76,6 +80,7 @@ describe('user', () => {
     it('should be able to update event from user', async(done) => {
         await helper.resetDatabase();
         await helper.loadFixtures();
+        const authToken = await helper.loginUser('test@hda.de');
         const user = await helper.getRepo(User).findOneOrFail({relations: ['eventTypes'], where:{ id: 1}});
         const newevent = new EventType()
         newevent.title = "test"
@@ -94,6 +99,7 @@ describe('user', () => {
         })
         .set('Content-Type', 'application/json')
         .set('Accept', 'application/json')
+        .set('Authorization', authToken)
         .end(async(err , _res) => {
             if(err) throw err;
             const event = await helper.getRepo(EventType).find({})
@@ -109,6 +115,7 @@ describe('user', () => {
     it('should be able to delete event from user', async(done) => {
         await helper.resetDatabase();
         await helper.loadFixtures();
+        const authToken = await helper.loginUser('test@hda.de');
         const user = await helper.getRepo(User).findOneOrFail({relations: ['eventTypes'], where:{ id: 1}});
         const newevent = new EventType()
         newevent.title = "test"
@@ -121,6 +128,7 @@ describe('user', () => {
         .delete(`/api/user/1/eventType/${newevent.id}`)
         .set('Content-Type', 'application/json')
         .set('Accept', 'application/json')
+        .set('Authorization', authToken)
         .end(async(err , _res) => {
             if(err) throw err;
             const event = await helper.getRepo(EventType).find({})

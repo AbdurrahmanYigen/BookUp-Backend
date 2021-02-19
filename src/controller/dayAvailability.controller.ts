@@ -4,15 +4,6 @@ import { DayAvailability } from "../entity/DayAvailability";
 import { User } from "../entity/User";
 import { Day, mapDayStringToDayEnum } from "../enums/day";
 
-export const getDayAvailability = async (_: Request, res: Response) => {
-    const availableTimeRepository = getRepository(DayAvailability);
-    const availability = await availableTimeRepository.find();
-    console.log("AvailableTimeGet: ", availability);
-    res.send({
-        data: availability,
-    });
-};
-
 export const getAvailabilityOfUser = async (req: Request, res: Response) => {
     const userId = req.params.userId;
     const userRepository = getRepository(User);

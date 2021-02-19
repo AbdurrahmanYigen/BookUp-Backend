@@ -5,6 +5,7 @@ export const userRouter = Router({ mergeParams: true });
 
 
 import multer from 'multer';
+import { Authentication } from "../middleware/authentication";
 
 var storage = multer.diskStorage({
     destination: (_req, _file, cb) => {
@@ -20,31 +21,31 @@ const upload = multer({ storage: storage });
 
 
 //Add Event to user
-userRouter.post('/:userid/eventType', createEvent);
+userRouter.post('/:userid/eventType', Authentication.verifyAccess, createEvent);
 
 //Get Events from Userid
-userRouter.get('/:userId/eventTypes', getEventFromUserId);
+userRouter.get('/:userId/eventTypes', Authentication.verifyAccess, getEventFromUserId);
 
 //Update Event
-userRouter.patch('/:userid/eventType/:eventid', updateEvent);
+userRouter.patch('/:userid/eventType/:eventid', Authentication.verifyAccess, updateEvent);
 
 //Delete Event
-userRouter.delete('/:userid/eventType/:eventid', DeleteEvent);
+userRouter.delete('/:userid/eventType/:eventid', Authentication.verifyAccess, DeleteEvent);
 
 //Get User by Id
-userRouter.get('/:userId', getUserById);
+userRouter.get('/:userId', Authentication.verifyAccess, getUserById);
 
 //Get All Users
-userRouter.get('/', getAllUsers);
+userRouter.get('/', Authentication.verifyAccess, getAllUsers);
 
 //Patch User by Id
-userRouter.patch('/:userId', patchUserById);
+userRouter.patch('/:userId', Authentication.verifyAccess, patchUserById);
 
 //Patch User Image
-userRouter.post('/:userId/image', upload.single('avatar'), uploadImage);
+userRouter.post('/:userId/image', Authentication.verifyAccess, upload.single('avatar'), uploadImage);
 
 //Delete User by Id
-userRouter.delete('/:userId', deleteUserById);
+userRouter.delete('/:userId', Authentication.verifyAccess, deleteUserById);
 
 //Register User 
 userRouter.post('/register', registerUser);
