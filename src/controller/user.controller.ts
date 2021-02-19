@@ -114,7 +114,7 @@ export const getAllUsers = async (_: Request, res: Response) => {
 export const patchUserById = async (req: Request, res: Response) => {
     const userRepository = await getRepository(User);
     const userId = req.params.userId;
-    const { email, userName, password } = req.body;
+    const { userName, password } = req.body;
 
     try {
         let user = await userRepository.findOneOrFail(userId)
@@ -124,9 +124,6 @@ export const patchUserById = async (req: Request, res: Response) => {
         if ('password' in req.body) {
             const hashedPassword: string = await Authentication.hashPassword(password)
             user.password = hashedPassword;
-        }
-        else if ('email' in req.body) {
-            user.email = email
         }
 
         const updatedUser = await userRepository.save(user)

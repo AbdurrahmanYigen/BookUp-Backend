@@ -22,6 +22,8 @@ describe('dayAvailability', () => {
     it('should update the start and end times of Monday', async(done) => {
         await helper.resetDatabase();
         await helper.loadFixtures();
+        const authToken = await helper.loginUser('test@hda.de');
+
         request(helper.app)
         .patch(`/api/availability/update/1`)
         .send({
@@ -34,6 +36,7 @@ describe('dayAvailability', () => {
         })
         .set('Content-Type', 'application/json')
         .set('Accept', 'application/json')
+        .set('Authorization', authToken)
         .end(async(err, _res) => {
             if(err) throw err;
             const user = await helper.getRepo(User).findOneOrFail({relations: ['availableTime'], where:{ id: 1}});
@@ -50,10 +53,13 @@ describe('dayAvailability', () => {
     it('should get all availability', async(done) => {
         await helper.resetDatabase();
         await helper.loadFixtures();
+        const authToken = await helper.loginUser('test@hda.de');
+
         request(helper.app)
         .get(`/api/availability`)
         .set('Content-Type', 'application/json')
         .set('Accept', 'application/json')
+        .set('Authorization', authToken)
         .end(async(err, _res) => {
             if(err) throw err;
             const Availability = await helper.getRepo(DayAvailability).find({});
@@ -65,10 +71,13 @@ describe('dayAvailability', () => {
     it('should get Dayavailability of User', async(done) => {
         await helper.resetDatabase()
         await helper.loadFixtures()
+        const authToken = await helper.loginUser('test@hda.de');
+
         request(helper.app)
         .get(`/api/availability/1`)
         .set('Content-Type', 'application/json')
         .set('Accept', 'application/json')
+        .set('Authorization', authToken)
         .end(async(err, _res) => {
             if(err) throw err;
             const user = await helper.getRepo(User).findOneOrFail({ relations: ['availableTime'], where: { id: 1 } });
