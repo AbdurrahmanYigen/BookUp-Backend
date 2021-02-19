@@ -14,6 +14,7 @@ This project provides the necessary API for the [Book-Up Frontend](https://code.
 
 ## Testing
 
+
 This project uses automated tests to make sure that the API runs correctly. You can find those test in `/test`.
 Furthermore, you can import the Postman-Collection provieded in `/Postman` to your Postman client and execute the given tests to convince yourself that the routes are working.  
 
