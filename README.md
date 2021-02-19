@@ -5,6 +5,18 @@ This project provides the necessary API for the [Book-Up Frontend](https://code.
 
 In order to be able to run this project, you have to: 1. clone this project 2. open a terminal in the directory of this project and run npm i 3. run docker-compose up  When the steps above were performed, a database will be created and seeded with a lot of Users
 
+Also you need to create following .env file in the root directory:
+
+```
+PORT=4000
+DBPORT=3306
+DBUSER=root
+DBPASSWORD=123456789
+DBDATABASE=bookup-db
+DBHOST=db
+NODE_ENV=development
+```
+
 
 ## Features
 
