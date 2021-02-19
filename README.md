@@ -8,9 +8,346 @@ This project provides the necessary API for the [Book-Up Frontend](https://code.
 
 ## Features
 
+## Stage
+The stageing environment of this project can be found [here](https://bookup-backend.herokuapp.com/).
 
+Test User:
+email: test@gmail.com
+password: test
 
 ## API Documentation
+### User
+
+User Object Reference:
+```
+{
+  id: number;
+  userName: string;
+  email: string;
+  password: string
+  availableTime: DayAvailability[];
+  emailVerifiedAt: Date;
+  imageId: ProfilePhoto;
+  eventTypes: EventType[];
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
+  deletedAt: Timestamp;
+}
+```
+
+
+
+##### Register User
+
+Request:
+```
+POST /user/register
+
+Content-Type:application/json
+
+{
+    "userName": string,
+    "email": string,
+    "password": string
+}
+```
+
+Response:
+```JSON
+{
+    "data": User
+}
+```
+
+##### Login User
+
+
+Request:
+```
+POST /user/token
+
+Content-Type:application/json
+
+{
+    "userName": string,
+    "password": string
+}
+```
+
+Response:
+```JSON
+{
+    "data": string      # returns authorized token from User
+}
+```
+
+
+##### Get all Users
+
+Request:
+```
+GET /user/
+```
+
+Response:
+```JSON
+{
+    "data": User[]
+}
+```
+
+##### Get User
+
+Request:
+```
+GET /user/:id
+```
+
+Response:
+```JSON
+{
+    "data": User
+}
+```
+
+##### Update User
+
+Request:
+```
+PATCH /user/:id
+
+Content-Type:application/json
+
+{
+    "userName": string,
+    "password": string
+}
+```
+
+Response:
+```JSON
+{
+    "data": User    # returns updated User
+}
+```
+##### Delete User
+
+Request:
+```
+DELETE /user/:id
+```
+
+Response:
+```JSON
+{
+    "message": string;
+}
+```
+
+### Invitee
+
+Invitee Object Reference:
+```
+{
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string;
+}
+```
+
+##### Get all Invitees
+
+Request:
+```
+GET /invitee/
+```
+
+Response:
+```JSON
+{
+    "data": Invitee[]
+}
+```
+
+##### Create Invitee
+
+Request:
+```
+POST /invitee/
+
+Content-Type:application/json
+
+{
+    "fistname": string,
+    "lastname": string,
+    "email": string,
+}
+```
+
+Response:
+```JSON
+{
+    "data": Invitee
+}
+```
+
+##### Delete Invitee
+
+Request:
+```
+DELETE /invitee/:id
+```
+
+Response:
+```JSON
+{
+    "message": string;
+}
+```
+
+
+
+
+### Booking
+
+Booking Object Reference:
+```
+{
+  id: string;
+  date: Date;
+  status: Enum;
+  invitee: Invitee;
+  eventType: EventType;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string;
+}
+```
+
+##### Get all Bookings
+
+Request:
+```
+GET /booking/
+```
+
+Response:
+```JSON
+{
+    "data": Booking[],
+}
+```
+
+##### Get All Bookings from User
+
+Request:
+```
+GET /booking/all/:userId
+```
+
+Response:
+```JSON
+{
+    "data": Booking[],
+}
+```
+
+
+##### Day Availability
+
+DayAvailability Object Reference:
+```
+{
+  id: number;
+  user: User;
+  day: enum;
+  fromTimeHour: number;
+  fromTimeMinute: number;
+  endTimeHour: number;
+  endTimeMinute: number;
+  active: boolean;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string;
+}
+```
+
+Request:
+```
+POST /tracking/
+
+Content-Type:application/json
+
+{
+    "date": Date,
+    "status": integer,
+    "invitee": Invitee,
+    "eventType": EventType,
+}
+```
+
+Response:
+```JSON
+{
+    "data": Tracking    # returns the created Booking
+}
+```
+
+##### Delete Booking
+
+Request:
+```
+DELETE /booking/:id
+```
+
+Response:
+```JSON
+{
+    "message": string;
+}
+```
+
+##### Create Booking
+
+Request:
+```
+POST /tracking/
+
+Content-Type:application/json
+
+{
+    "date": Date,
+    "status": integer,
+    "invitee": Invitee,
+    "eventType": EventType,
+}
+```
+
+Response:
+```JSON
+{
+    "data": Tracking    # returns the created Booking
+}
+```
+
+##### Delete Booking
+
+Request:
+```
+DELETE /booking/:id
+```
+
+Response:
+```JSON
+{
+    "message": string;
+}
+```
+
 
 ## Testing
 
