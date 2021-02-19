@@ -3,13 +3,10 @@ This project provides the necessary API for the [Book-Up Frontend](https://code.
 
 ## Installation
 
-In order to be able to run this project, you have to:
-1. clone this project
-2. open a terminal in the directory of this project and run `npm i`
-3. run `docker-compose up`
+In order to be able to run this project, you have to: 1. clone this project 2. open a terminal in the directory of this project and run npm i 3. run docker-compose up  When the steps above were performed, a database will be created and seeded with a lot of Users
 
-When the steps above were performed, a database will be created and seeded with a lot of Users.
 
+## Features
 
 ## Stage
 The stageing environment of this project can be found [here](https://bookup-backend.herokuapp.com/).
@@ -260,7 +257,7 @@ Response:
 ```
 
 
-##### Day Availability
+### Day Availability
 
 DayAvailability Object Reference:
 ```
@@ -278,70 +275,75 @@ DayAvailability Object Reference:
   deletedAt: string;
 }
 ```
-
+##### Days Availability from User
 Request:
 ```
-POST /tracking/
-
-Content-Type:application/json
-
-{
-    "date": Date,
-    "status": integer,
-    "invitee": Invitee,
-    "eventType": EventType,
-}
+GET /availability/:userId
 ```
 
 Response:
 ```JSON
 {
-    "data": Tracking    # returns the created Booking
+    "data": dayAvailability[]
 }
 ```
 
-##### Delete Booking
+##### Availability Time from User at Date
 
 Request:
 ```
-DELETE /booking/:id
+GET /booking/:id?date=:date
 ```
 
 Response:
 ```JSON
 {
-    "message": string;
+    "data": [
+        {
+            "hours": string,
+            "minutes": string
+        }
+    ]
 }
 ```
 
-##### Create Booking
+### EventType
+
+EventType Object Reference:
+```
+{
+  id: number;
+  title: string;
+  description: string;
+  duration: number;
+  link: string;
+  bookings: Booking[];
+  user: User;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string;
+}
+```
+
+##### all EventTypes from User
 
 Request:
 ```
-POST /tracking/
-
-Content-Type:application/json
-
-{
-    "date": Date,
-    "status": integer,
-    "invitee": Invitee,
-    "eventType": EventType,
-}
+GET /user/:userId/eventTypes
 ```
 
 Response:
 ```JSON
 {
-    "data": Tracking    # returns the created Booking
+    "data": EventType[],
 }
 ```
 
-##### Delete Booking
+##### Delete EventType from User
 
 Request:
 ```
-DELETE /booking/:id
+DELETE /user/:userId/eventType/:evenTypeId
 ```
 
 Response:
@@ -368,14 +370,7 @@ If the `Headers` field looks like this:
 
 then you will need to put the JWT into the value field (marked with a red arrow in the picture above).
 
-To get the JWT, you need to run `Register User` request first. Then log in via `Login User by Email and Password` request.
-Due to the seeding that was performed when the project was initialized, you can also just use the following User:
-
-Test User:
-email: test@gmail.com
-password: test
-
- If you logged yourself in correctly, you will recieve the JWT as shown in the following picture.     
+To get the JWT, you need to run `Register User` request first. Then log in via `Login User by Email and Password` request. If you logged yourself in correctly, you will recieve the JWT as shown in the following picture.     
 
 ![Login returns JWT](images/Login_returns_JWT_LI.jpg)
 
