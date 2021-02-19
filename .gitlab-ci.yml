@@ -4,14 +4,17 @@ before_script:
     - apt-get update -qy
     - apt-get install -y ruby-dev
     - gem install dpl
+    - npm ci
 
 stages:
-    - staging
+    - tests
     - production
 
-staging:
+tests:
+    - npm run build && npm run test
+
+production:
     type: deploy
-    stage: production
     image: ruby:latest
     script:
         - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_API_KEY
