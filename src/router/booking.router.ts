@@ -18,4 +18,4 @@ bookingRouter.delete('/:bookingId', Authentication.verifyAccess, deleteBookingBy
 bookingRouter.get('/all/:userId', Authentication.verifyAccess, getAllBookingsOfUser);
 
 //get available time for day
-bookingRouter.get('/:offerId', Authentication.verifyAccess,  getAvailableTimeForDate)
+bookingRouter.get('/:offerId' , getAvailableTimeForDate)
